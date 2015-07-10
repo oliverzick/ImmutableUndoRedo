@@ -18,7 +18,9 @@
 // </license>
 #endregion
 
+using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("ImmutableUndoRedo")]
@@ -30,9 +32,13 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
+[assembly: CLSCompliant(true)]
+
 [assembly: ComVisible(false)]
 
 [assembly: Guid("ef605850-4540-4e3a-9e71-cc10385d94c7")]
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+[assembly: InternalsVisibleTo("ImmutableUndoRedo.Test")]
