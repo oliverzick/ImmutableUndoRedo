@@ -25,6 +25,9 @@ namespace ImmutableUndoRedo
     /// <summary>
     /// Represents a history of events that supports doing, undoing and redoing of events.
     /// </summary>
+    /// <remarks>
+    /// This class is implemented as immutable object with value semantics.
+    /// </remarks>
     public sealed class History : IEquatable<History>
     {
         private readonly IEventNode done;
