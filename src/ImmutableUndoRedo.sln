@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableUndoRedo", "ImmutableUndoRedo\ImmutableUndoRedo.csproj", "{5ED2FF6A-209A-4ABE-9383-4C550E5D7DCE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{A2D1E7D5-0255-4FEC-BA21-D8446DA1BEB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableUndoRedo.Test", "ImmutableUndoRedo.Test\ImmutableUndoRedo.Test.csproj", "{446876B7-8517-4155-96C5-27F9161892EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1D1B0A5B-14ED-4F91-92F5-8B556CB68F75}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5ED2FF6A-209A-4ABE-9383-4C550E5D7DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ED2FF6A-209A-4ABE-9383-4C550E5D7DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ED2FF6A-209A-4ABE-9383-4C550E5D7DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ED2FF6A-209A-4ABE-9383-4C550E5D7DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{446876B7-8517-4155-96C5-27F9161892EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{446876B7-8517-4155-96C5-27F9161892EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{446876B7-8517-4155-96C5-27F9161892EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{446876B7-8517-4155-96C5-27F9161892EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5ED2FF6A-209A-4ABE-9383-4C550E5D7DCE} = {A2D1E7D5-0255-4FEC-BA21-D8446DA1BEB6}
+		{446876B7-8517-4155-96C5-27F9161892EA} = {1D1B0A5B-14ED-4F91-92F5-8B556CB68F75}
+	EndGlobalSection
+EndGlobal
