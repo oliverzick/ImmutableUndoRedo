@@ -1,37 +1,25 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="ImmutableUndoredo : A lightweight, flexible and easy to use do/undo/redo implementation based on immutable objects for .NET.">
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>ImmutableUndoredo</title>
+    <meta charset="UTF-8">
+    <title>ImmutableUndoredo by oliverzick</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
+    <section class="page-header">
+      <h1 class="project-name">ImmutableUndoredo</h1>
+      <h2 class="project-tagline">A lightweight, flexible and easy to use do/undo/redo implementation based on immutable objects for .NET.</h2>
+      <a href="https://github.com/oliverzick/ImmutableUndoRedo" class="btn">View on GitHub</a>
+      <a href="https://github.com/oliverzick/ImmutableUndoRedo/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/oliverzick/ImmutableUndoRedo/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/oliverzick/ImmutableUndoRedo">View on GitHub</a>
-
-          <h1 id="project_title">ImmutableUndoredo</h1>
-          <h2 id="project_tagline">A lightweight, flexible and easy to use do/undo/redo implementation based on immutable objects for .NET.</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/oliverzick/ImmutableUndoRedo/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/oliverzick/ImmutableUndoRedo/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
+    <section class="main-content">
+      <h1>
 <a id="immutableundoredo" class="anchor" href="#immutableundoredo" aria-hidden="true"><span class="octicon octicon-link"></span></a>ImmutableUndoRedo</h1>
 
 <p>A lightweight, flexible and easy to use do/undo/redo implementation based on immutable objects for .NET.</p>
@@ -43,18 +31,144 @@
 
 <pre><code>PM&gt; install-package ImmutableUndoRedo
 </code></pre>
-      </section>
-    </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">ImmutableUndoredo maintained by <a href="https://github.com/oliverzick">oliverzick</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+<h1>
+<a id="sample" class="anchor" href="#sample" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sample</h1>
+
+<h2>
+<a id="event-implementation" class="anchor" href="#event-implementation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Event implementation</h2>
+
+<pre><code>struct Event : IEvent
+{
+    private readonly int id;
+
+    private readonly int totalDo;
+
+    private readonly int totalUndo;
+
+    public Event(int id)
+        : this()
+    {
+        this.id = id;
+    }
+
+    private Event(int id, int totalDo, int totalUndo)
+        : this(id)
+    {
+        this.totalDo = totalDo;
+        this.totalUndo = totalUndo;
+    }
+
+    public IEvent Do()
+    {
+        Console.WriteLine("Do   event #{0} (total 'Do': {1} | total 'Undo': {2})", this.id, this.totalDo + 1, this.totalUndo);
+
+        return new Event(this.id, this.totalDo + 1, this.totalUndo);
+    }
+
+    public IEvent Undo()
+    {
+        Console.WriteLine("Undo event #{0} (total 'Do': {1} | total 'Undo': {2})", this.id, this.totalDo, this.totalUndo + 1);
+
+        return new Event(this.id, this.totalDo, this.totalUndo + 1);
+    }
+}
+</code></pre>
+
+<h2>
+<a id="use-of-the-history-class" class="anchor" href="#use-of-the-history-class" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use of the History class</h2>
+
+<pre><code>static void Main(string[] args)
+{
+    // Create history instance without any done or undone events
+    var history = History.CreateEmpty();
+
+    // Current history:
+    // Done:    (none)
+    // Undone:  (none)
+
+    // Perform 'Do' operation of event #1 and
+    // use resulting event as next event to undo.
+    // Empty undone events.
+    history = history.Do(new Event(1));
+
+    // Current history:
+    // Done:    #1
+    // Undone:  (none)
+
+    // Perform 'Do' operation of event #2 and
+    // use resulting event as next event to undo.
+    // Empty undone events.
+    history = history.Do(new Event(2));
+
+    // Current history:
+    // Done:    #2 -&gt; #1
+    // Undone:  (none)
+
+    // Perform 'Do' operation of event #3 and
+    // use resulting event as next event to undo.
+    // Empty undone events.
+    history = history.Do(new Event(3));
+
+    // Current history:
+    // Done:    #3 -&gt; #2 -&gt; #1
+    // Undone:  (none)
+
+    // Perform 'Undo' operation of event #3 and
+    // use resulting event as next event to redo.
+    history = history.Undo();
+
+    // Current history:
+    // Done:    #2 -&gt; #1
+    // Undone:  #3
+
+    // Perform 'Undo' operation of event #2 and
+    // use resulting event as next event to redo.
+    history = history.Undo();
+
+    // Current history:
+    // Done:    #1
+    // Undone:  #2 -&gt; #3
+
+    // Perform 'Do' operation of event #2 and
+    // use resulting event as next event to undo.
+    history = history.Redo();
+
+    // Current history:
+    // Done:    #2 -&gt; #1
+    // Undone:  #3
+
+    // Perform 'Do' operation of event #4 and 
+    // use resulting event as next event to undo.
+    // Empties undone events.
+    history = history.Do(new Event(4));
+
+    // Current history:
+    // Done:    #4 -&gt; #2 -&gt; #1
+    // Undone:  (none)
+
+    Console.ReadLine();
+}
+
+// Console output:
+Do   event #1 (total 'Do': 1 | total 'Undo': 0)
+Do   event #2 (total 'Do': 1 | total 'Undo': 0)
+Do   event #3 (total 'Do': 1 | total 'Undo': 0)
+Undo event #3 (total 'Do': 1 | total 'Undo': 1)
+Undo event #2 (total 'Do': 1 | total 'Undo': 1)
+Do   event #2 (total 'Do': 2 | total 'Undo': 1)
+Do   event #4 (total 'Do': 1 | total 'Undo': 0)
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/oliverzick/ImmutableUndoRedo">ImmutableUndoredo</a> is maintained by <a href="https://github.com/oliverzick">oliverzick</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
-    </div>
 
-    
+    </section>
 
+  
   </body>
 </html>
+
