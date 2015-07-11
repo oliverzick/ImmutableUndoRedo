@@ -5,7 +5,11 @@ Copyright (c) 2015 Oliver Zick. All rights reserved.
 
 Change history:
 
-Version 1.0:
+Version 1.0.1:
+
+	- Exclude PDB file from NuGet package
+
+Version 1.0.0:
 
 	- Add implementation of history that supports do, undo and redo operations
 	- Add IEvent interface that represents an event and supports do and undo operations
