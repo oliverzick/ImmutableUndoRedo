@@ -23,41 +23,6 @@ namespace ImmutablUndoRedo
     using System;
     using ImmutableUndoRedo;
 
-    struct Event : IEvent
-    {
-        private readonly int id;
-
-        private readonly int totalDo;
-
-        private readonly int totalUndo;
-
-        public Event(int id)
-            : this()
-        {
-            this.id = id;
-        }
-
-        private Event(int id, int totalDo, int totalUndo) : this(id)
-        {
-            this.totalDo = totalDo;
-            this.totalUndo = totalUndo;
-        }
-
-        public IEvent Do()
-        {
-            Console.WriteLine("Do   event #{0} (total 'Do': {1} | total 'Undo': {2})", this.id, this.totalDo + 1, this.totalUndo);
-
-            return new Event(this.id, this.totalDo + 1, this.totalUndo);
-        }
-
-        public IEvent Undo()
-        {
-            Console.WriteLine("Undo event #{0} (total 'Do': {1} | total 'Undo': {2})", this.id, this.totalDo, this.totalUndo + 1);
-
-            return new Event(this.id, this.totalDo, this.totalUndo + 1);
-        }
-    }
-
     class Program
     {
         static void Main(string[] args)
