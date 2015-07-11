@@ -7,7 +7,7 @@
     <ProjectGuid>{C6401CB4-DDC9-42DF-AB83-2E4CE63ED1BB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ImmutablUndoRedo</RootNamespace>
+    <RootNamespace>ImmutableUndoRedo</RootNamespace>
     <AssemblyName>Sample</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

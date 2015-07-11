@@ -18,10 +18,9 @@
 // </license>
 #endregion
 
-namespace ImmutablUndoRedo
+namespace ImmutableUndoRedo
 {
     using System;
-    using ImmutableUndoRedo;
 
     struct Event : IEvent
     {
