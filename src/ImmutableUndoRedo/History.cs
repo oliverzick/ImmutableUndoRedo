@@ -132,6 +132,34 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
+        /// Returns a new history that contains the events to redo of this instance
+        /// without any events to undo.
+        /// </summary>
+        /// <returns>
+        /// A new history that contains no events to undo and the events to redo of this instance.
+        /// </returns>
+        public History ClearDone()
+        {
+            return new History(
+                new NullEventNode(),
+                this.undone);
+        }
+
+        /// <summary>
+        /// Returns a new history that contains the events to undo of this instance
+        /// without any events to redo.
+        /// </summary>
+        /// <returns>
+        /// A new history that contains the events to undo of this instance and no events to redo.
+        /// </returns>
+        public History ClearUndone()
+        {
+            return new History(
+                this.done,
+                new NullEventNode());
+        }
+
+        /// <summary>
         /// Returns a new history after performing the 'Do' operation of the specified <paramref name="event"/>
         /// that contains the result of this operation as the next event to undo
         /// without any events to redo.
