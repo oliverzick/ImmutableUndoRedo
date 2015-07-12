@@ -5,6 +5,10 @@ Copyright (c) 2015 Oliver Zick. All rights reserved.
 
 Change history:
 
+Version 1.1.0:
+
+	- Enable History class to clear done and undone events
+
 Version 1.0.1:
 
 	- Exclude PDB file from NuGet package
