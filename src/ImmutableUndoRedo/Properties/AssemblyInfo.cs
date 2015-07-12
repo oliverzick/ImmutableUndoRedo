@@ -39,6 +39,6 @@ using System.Runtime.InteropServices;
 [assembly: Guid("ef605850-4540-4e3a-9e71-cc10385d94c7")]
 
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 
 [assembly: InternalsVisibleTo("ImmutableUndoRedo.Test")]
