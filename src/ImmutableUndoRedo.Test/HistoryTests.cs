@@ -35,6 +35,52 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
+        public void ClearDone__With_Injected_Done_And_Injected_Undone__Should_Return_New_Instance_With_Empty_Done_And_Injected_Undone()
+        {
+            var doneEvent = new EventStub(1);
+            var doneNext = new NullEventNode();
+            var done = new EventNode(doneEvent, doneNext);
+
+            var undoneEvent = new EventStub(2);
+            var undoneNext = new NullEventNode();
+            var undone = new EventNode(undoneEvent, undoneNext);
+
+            var target = new Builder().WithDone(done).WithUndone(undone).Build();
+
+            var expectedDone = new NullEventNode();
+            var expectedUndone = undone;
+
+            var expected = new Builder().WithDone(expectedDone).WithUndone(expectedUndone).Build();
+
+            var actual = target.ClearDone();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ClearUndone__With_Injected_Done_And_Injected_Undone__Should_Return_New_Instance_With_Injected_Done_And_Empty_Undone()
+        {
+            var doneEvent = new EventStub(1);
+            var doneNext = new NullEventNode();
+            var done = new EventNode(doneEvent, doneNext);
+
+            var undoneEvent = new EventStub(2);
+            var undoneNext = new NullEventNode();
+            var undone = new EventNode(undoneEvent, undoneNext);
+
+            var target = new Builder().WithDone(done).WithUndone(undone).Build();
+
+            var expectedDone = done;
+            var expectedUndone = new NullEventNode();
+
+            var expected = new Builder().WithDone(expectedDone).WithUndone(expectedUndone).Build();
+
+            var actual = target.ClearUndone();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void Do__With_Event__Should_Return_New_Instance_That_Represents_The_History_After_Performing_The_Do_Operation_Of_The_Event()
         {
             var done = new NullEventNode();
