@@ -5,6 +5,10 @@ Copyright (c) 2015 Oliver Zick. All rights reserved.
 
 Change history:
 
+Version 1.1.1:
+
+	- Enable NuGet package to support .NET Framework versions 3.5, 4.0, 4.5 and 4.5.1
+
 Version 1.1.0:
 
 	- Enable History class to clear done and undone events

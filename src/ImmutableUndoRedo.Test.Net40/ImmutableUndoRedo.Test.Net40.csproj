@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{446876B7-8517-4155-96C5-27F9161892EA}</ProjectGuid>
+    <ProjectGuid>{084C5221-1F0B-4AD3-B488-4031A408B714}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ImmutableUndoRedo</RootNamespace>
     <AssemblyName>ImmutableUndoRedo.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,7 +16,6 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,6 +36,42 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="..\ImmutableUndoRedo.Test\EventDummy.cs">
+      <Link>EventDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo.Test\EventNodeDummy.cs">
+      <Link>EventNodeDummy.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo.Test\EventNodeTests.cs">
+      <Link>EventNodeTests.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo.Test\EventStub.cs">
+      <Link>EventStub.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo.Test\HistoryIntegrationTests.cs">
+      <Link>HistoryIntegrationTests.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo.Test\HistoryTests.cs">
+      <Link>HistoryTests.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo.Test\NullEventNodeTests.cs">
+      <Link>NullEventNodeTests.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo.Test\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImmutableUndoRedo.Net40\ImmutableUndoRedo.Net40.csproj">
+      <Project>{46377b6d-7c6e-40b2-a613-7f89c80f3f32}</Project>
+      <Name>ImmutableUndoRedo.Net40</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -50,22 +85,6 @@
       </ItemGroup>
     </Otherwise>
   </Choose>
-  <ItemGroup>
-    <Compile Include="EventDummy.cs" />
-    <Compile Include="EventNodeDummy.cs" />
-    <Compile Include="EventNodeTests.cs" />
-    <Compile Include="EventStub.cs" />
-    <Compile Include="HistoryIntegrationTests.cs" />
-    <Compile Include="HistoryTests.cs" />
-    <Compile Include="NullEventNodeTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ImmutableUndoRedo\ImmutableUndoRedo.csproj">
-      <Project>{5ED2FF6A-209A-4ABE-9383-4C550E5D7DCE}</Project>
-      <Name>ImmutableUndoRedo</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
