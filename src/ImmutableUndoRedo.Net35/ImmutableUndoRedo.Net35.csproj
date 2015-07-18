@@ -4,56 +4,63 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C6401CB4-DDC9-42DF-AB83-2E4CE63ED1BB}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{6D4E7D69-C9A1-4F78-9CEB-C42F81CF9AF3}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ImmutableUndoRedo</RootNamespace>
-    <AssemblyName>Sample</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <AssemblyName>ImmutableUndoRedo</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\net35\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Debug\net35\ImmutableUndoRedo.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\net35\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\bin\Release\net35\ImmutableUndoRedo.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Event.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ImmutableUndoRedo\ImmutableUndoRedo.csproj">
-      <Project>{5ED2FF6A-209A-4ABE-9383-4C550E5D7DCE}</Project>
-      <Name>ImmutableUndoRedo</Name>
-    </ProjectReference>
+    <Compile Include="..\ImmutableUndoRedo\EventNode.cs">
+      <Link>EventNode.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo\Hash.cs">
+      <Link>Hash.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo\History.cs">
+      <Link>History.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo\IEvent.cs">
+      <Link>IEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo\IEventNode.cs">
+      <Link>IEventNode.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo\NullEventNode.cs">
+      <Link>NullEventNode.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

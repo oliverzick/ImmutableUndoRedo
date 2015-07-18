@@ -1,32 +1,29 @@
-<?xml version="1.0"?>
-<package>
-  <metadata>
-    <id>ImmutableUndoRedo</id>
-    <version>1.1.0</version>
-    <title>ImmutableUndoRedo</title>
-    <authors>Oliver Zick</authors>
-    <description>
-      A lightweight, flexible and easy to use do/undo/redo implementation based on immutable objects for .NET.
-    </description>
-    <releaseNotes>
-      https://raw.githubusercontent.com/oliverzick/ImmutableUndoRedo/master/src/ChangeHistory.txt
-    </releaseNotes>
-    <summary>
-      A lightweight, flexible and easy to use do/undo/redo implementation based on immutable objects for .NET.
-    </summary>
-    <language>en-US</language>
-    <projectUrl>https://github.com/oliverzick/ImmutableUndoRedo</projectUrl>
-    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://raw.githubusercontent.com/oliverzick/ImmutableUndoRedo/master/LICENSE</licenseUrl>
-    <copyright>Copyright (c) 2015 Oliver Zick. All rights reserved.</copyright>
-    <dependencies>
-    </dependencies>
-    <references></references>
-    <tags>do undo redo history immutable immutability</tags>
-  </metadata>
-  <files>
-    <file src="ImmutableUndoRedo\bin\Release\*.dll" target="lib" />
-    <file src="ImmutableUndoRedo\bin\Release\*.xml" target="lib" />
-  </files>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>ImmutableUndoRedo</id>
+        <version>1.1.1</version>
+        <title>ImmutableUndoRedo</title>
+        <authors>Oliver Zick</authors>
+        <licenseUrl>https://raw.githubusercontent.com/oliverzick/ImmutableUndoRedo/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/oliverzick/ImmutableUndoRedo</projectUrl>
+        <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A lightweight, flexible and easy to use do/undo/redo implementation based on immutable objects for .NET.</description>
+        <summary>A lightweight, flexible and easy to use do/undo/redo implementation based on immutable objects for .NET.</summary>
+        <releaseNotes>https://raw.githubusercontent.com/oliverzick/ImmutableUndoRedo/master/src/ChangeHistory.txt</releaseNotes>
+        <copyright>Copyright (c) 2015 Oliver Zick. All rights reserved.</copyright>
+        <language>en-US</language>
+        <tags>do undo redo history immutable immutability</tags>
+    </metadata>
+    <files>
+        <file src="bin\Release\net35\*.dll" target="lib\net35\" />
+        <file src="bin\Release\net35\*.xml" target="lib\net35\" />
+        <file src="bin\Release\net40\*.dll" target="lib\net40\" />
+        <file src="bin\Release\net40\*.xml" target="lib\net40\" />
+        <file src="bin\Release\net45\*.dll" target="lib\net45\" />
+        <file src="bin\Release\net45\*.xml" target="lib\net45\" />
+        <file src="bin\Release\net451\*.dll" target="lib\net451\" />
+        <file src="bin\Release\net451\*.xml" target="lib\net451\" />
+    </files>
 </package>
