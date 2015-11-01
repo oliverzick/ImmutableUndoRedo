@@ -21,6 +21,7 @@
 namespace ImmutableUndoRedo
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a history of events that supports doing, undoing and redoing of events.
@@ -28,31 +29,25 @@ namespace ImmutableUndoRedo
     /// <remarks>
     /// This class is implemented as immutable object with value semantics.
     /// </remarks>
-    public sealed class History : IEquatable<History>
+    public sealed class History : IEquatable<History>, IContentEquatable<History>
     {
-        private readonly IEventNode done;
+        private readonly Node<IEvent> done;
 
-        private readonly IEventNode undone;
+        private readonly Node<IEvent> undone;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="History"/> class
-        /// with the specified <paramref name="done"/> and <paramref name="undone"/> events.
-        /// </summary>
-        /// <param name="done">The done events.</param>
-        /// <param name="undone">The undone events.</param>
-        internal History(IEventNode done, IEventNode undone)
+        private History(Node<IEvent> done, Node<IEvent> undone)
         {
             this.done = done;
             this.undone = undone;
         }
 
         /// <summary>
-        /// Determines whether two specified histories represent the same history of events.
+        /// Determines whether two specified histories have the same value.
         /// </summary>
         /// <param name="left">The first history to compare.</param>
         /// <param name="right">The second history to compare.</param>
         /// <returns>
-        /// <c>true</c> if the <paramref name="left"/> history represents the same history as the <paramref name="right"/> history; otherwise, <c>false</c>.
+        /// <c>true</c> if the value of <paramref name="left"/> is the same as the value of <paramref name="right"/>; otherwise, <c>false</c>.
         /// </returns>
         public static bool operator ==(History left, History right)
         {
@@ -60,12 +55,12 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
-        /// Determines whether two specified histories do not represent the same history of events.
+        /// Determines whether two specified histories have different values.
         /// </summary>
         /// <param name="left">The first history to compare.</param>
         /// <param name="right">The second history to compare.</param>
         /// <returns>
-        /// <c>true</c> if the <paramref name="left"/> history does not represent the same history as the <paramref name="right"/> history; otherwise, <c>false</c>.
+        /// <c>true</c> if the value of <paramref name="left"/> is different from the value of <paramref name="right"/>; otherwise, <c>false</c>.
         /// </returns>
         public static bool operator !=(History left, History right)
         {
@@ -73,24 +68,58 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
-        /// Creates a new history instance that is empty and contains neither done nor undone events.
+        /// Creates a <see cref="History"/> that contains neither done nor undone events.
         /// </summary>
         /// <returns>
-        /// A new history instance that contains neither done nor undone events.
+        /// A <see cref="History"/> that contains neither done nor undone events.
         /// </returns>
-        public static History CreateEmpty()
+        public static History Create()
         {
             return new History(
-                new NullEventNode(), 
-                new NullEventNode());
+                Node<IEvent>.None(),
+                Node<IEvent>.None());
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Creates a <see cref="History"/> that contains the specified
+        /// <paramref name="done"/> and <paramref name="undone"/> events.
         /// </summary>
-        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <param name="done">
+        /// The done events given in chronological order.
+        /// </param>
+        /// <param name="undone">
+        /// The undone events given in chronological order.
+        /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// A <see cref="History"/> that contains the specified
+        /// <paramref name="done"/> and <paramref name="undone"/> events.
+        /// </returns>
+        public static History Create(IEnumerable<IEvent> done, IEnumerable<IEvent> undone)
+        {
+            return new History(
+                Node<IEvent>.Create(done),
+                Node<IEvent>.Create(undone));
+        }
+
+        /// <summary>
+        /// Creates a <see cref="History"/> that contains neither done nor undone events.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="History"/> that contains neither done nor undone events.
+        /// </returns>
+        [Obsolete("Replace with 'Create' method.", false)]
+        public static History CreateEmpty()
+        {
+            return Create();
+        }
+
+        /// <summary>
+        /// Determines whether this instance and a specified object, which must also be a <see cref="History"/>, have the same value.
+        /// </summary>
+        /// <param name="obj">The <see cref="object" /> to compare to this instance.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="obj"/> is a <see cref="History"/> and its value is the same as this instance; otherwise, <c>false</c>.
+        /// If <paramref name="obj"/> is <c>null</c>, the method returns <c>false</c>.
         /// </returns>
         public override bool Equals(object obj)
         {
@@ -98,26 +127,16 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
+        /// Determines whether this instance and another specified <see cref="History"/> have the same value.
         /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
+        /// <param name="other">The history to compare with this instance.</param>
         /// <returns>
-        /// <c>true</c> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <c>false</c>.
+        /// <c>true</c> if the value of <paramref name="other"/> is the same as the value of this instance; otherwise, <c>false</c>.
+        /// If <paramref name="other"/> is <c>null</c>, the method returns <c>false</c>.
         /// </returns>
         public bool Equals(History other)
         {
-            if (object.ReferenceEquals(other, null))
-            {
-                return false;
-            }
-
-            if (object.ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            return object.Equals(this.done, other.done)
-                   && object.Equals(this.undone, other.undone);
+            return ValueSemantics.Equals(this, other);
         }
 
         /// <summary>
@@ -128,82 +147,99 @@ namespace ImmutableUndoRedo
         /// </returns>
         public override int GetHashCode()
         {
-            return Hash.Calculate(this.done.GetHashCode(), this.undone.GetHashCode());
+            return HashCode.Calculate(this.done.GetHashCode(), this.undone.GetHashCode());
         }
 
         /// <summary>
-        /// Returns a new history that contains the events to redo of this instance
-        /// without any events to undo.
+        /// Returns a new <see cref="History"/> that contains the undone events of this instance
+        /// without any done events.
         /// </summary>
         /// <returns>
-        /// A new history that contains no events to undo and the events to redo of this instance.
+        /// A <see cref="History"/> that is equivalent to this instance except that the done events are cleared.
         /// </returns>
         public History ClearDone()
         {
             return new History(
-                new NullEventNode(),
+                Node<IEvent>.None(),
                 this.undone);
         }
 
         /// <summary>
-        /// Returns a new history that contains the events to undo of this instance
-        /// without any events to redo.
+        /// Returns a new <see cref="History"/> that contains the done events of this instance
+        /// without any undone events.
         /// </summary>
         /// <returns>
-        /// A new history that contains the events to undo of this instance and no events to redo.
+        /// A <see cref="History"/> that is equivalent to this instance except that the undone events are cleared.
         /// </returns>
         public History ClearUndone()
         {
             return new History(
                 this.done,
-                new NullEventNode());
+                Node<IEvent>.None());
         }
 
         /// <summary>
-        /// Returns a new history after performing the 'Do' operation of the specified <paramref name="event"/>
-        /// that contains the result of this operation as the next event to undo
+        /// Returns a new <see cref="History"/> whose history of done events
+        /// is extended by the result of doing the specified <paramref name="event"/>,
         /// without any events to redo.
         /// </summary>
+        /// <param name="event">
+        /// The event to perform the <see cref="IEvent.Do"/> method whose result
+        /// is the next event to undo.
+        /// </param>
         /// <returns>
-        /// A new history that contains the resulting event of the 'Do' operation
-        /// of the specified <paramref name="event"/> as next event to undo
+        /// A new <see cref="History"/> whose history of done events
+        /// is extended by the result of performing the <see cref="IEvent.Do"/>
+        /// method of the specified <paramref name="event"/>,
         /// without any events to redo.
         /// </returns>
         public History Do(IEvent @event)
         {
             return new History(
-                new EventNode(@event, this.done).Do(),
-                new NullEventNode());
+                Node<IEvent>.Create(@event.Do(), this.done),
+                Node<IEvent>.None());
         }
 
         /// <summary>
-        /// Returns a new history after performing the 'Undo' operation of the next event to undo
-        /// that contains the result of this operation as next event to redo.
+        /// Returns a new <see cref="History"/> whose history of undone events
+        /// is extended by the result of undoing the recently done event,
+        /// having the history of done events truncated by the recently done event.
         /// </summary>
         /// <returns>
-        /// A new history that contains the resulting event of the 'Undo' operation
-        /// of the next event to undo as next event to redo.
+        /// Returns a new <see cref="History"/> whose history of undone events
+        /// is extended by the result of performing the <see cref="IEvent.Undo"/>
+        /// method of the recently done event,
+        /// having the history of done events truncated by the recently done event.
         /// </returns>
         public History Undo()
         {
             return new History(
                 this.done.Next(),
-                this.done.Undo().Concat(this.undone));
+                this.undone.Prepend(this.done.Apply(e => e.Undo())));
         }
 
         /// <summary>
-        /// Returns a new history after performing the 'Do' operation of the next event to redo
-        /// that contains the result of this operation as next event to undo.
+        /// Returns a new <see cref="History"/> whose history of done events
+        /// is extended by the result of doing the recently undone event,
+        /// having the history of undone events truncated by the recently undone event.
         /// </summary>
         /// <returns>
-        /// A new history that contains the resulting event of the 'Do' operation
-        /// of the next event to redo as next event to undo.
+        /// Returns a new <see cref="History"/> whose history of done events
+        /// is extended by the result of performing the <see cref="IEvent.Do"/>
+        /// method of the recently undone event,
+        /// having the history of undone events truncated by the recently undone event.
         /// </returns>
         public History Redo()
         {
             return new History(
-                this.undone.Do().Concat(this.done),
+                this.done.Prepend(this.undone.Apply(e => e.Do())),
                 this.undone.Next());
+        }
+
+        bool IContentEquatable<History>.ContentEquals(History other)
+        {
+            return object.Equals(this.done, other.done)
+                   && object.Equals(this.undone, other.undone);
         }
     }
 }

@@ -21,6 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Debug\net45\ImmutableUndoRedo.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\net45\ImmutableUndoRedo.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -37,26 +39,26 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="..\ImmutableUndoRedo\EventNode.cs">
-      <Link>EventNode.cs</Link>
-    </Compile>
-    <Compile Include="..\ImmutableUndoRedo\Hash.cs">
-      <Link>Hash.cs</Link>
+    <Compile Include="..\ImmutableUndoRedo\HashCode.cs">
+      <Link>HashCode.cs</Link>
     </Compile>
     <Compile Include="..\ImmutableUndoRedo\History.cs">
       <Link>History.cs</Link>
     </Compile>
+    <Compile Include="..\ImmutableUndoRedo\IContentEquatable.cs">
+      <Link>IContentEquatable.cs</Link>
+    </Compile>
     <Compile Include="..\ImmutableUndoRedo\IEvent.cs">
       <Link>IEvent.cs</Link>
     </Compile>
-    <Compile Include="..\ImmutableUndoRedo\IEventNode.cs">
-      <Link>IEventNode.cs</Link>
-    </Compile>
-    <Compile Include="..\ImmutableUndoRedo\NullEventNode.cs">
-      <Link>NullEventNode.cs</Link>
+    <Compile Include="..\ImmutableUndoRedo\Node.cs">
+      <Link>Node.cs</Link>
     </Compile>
     <Compile Include="..\ImmutableUndoRedo\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo\ValueSemantics.cs">
+      <Link>ValueSemantics.cs</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

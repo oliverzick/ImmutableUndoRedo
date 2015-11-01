@@ -20,37 +20,45 @@
 
 namespace ImmutableUndoRedo
 {
+    using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class HistoryTests
     {
         [TestMethod]
-        public void CreateEmpty__Should_Return_New_Instance_With_NullEventNode_Instances_For_Both_Done_And_Undone()
+        public void Create__Should_Return_New_Instance_With_Neither_Done_Nor_Undone_Events()
         {
-            var expected = new Builder().WithDone(new NullEventNode()).WithUndone(new NullEventNode()).Build();
+            var expectedDone = Enumerable.Empty<IEvent>();
+            var expectedUndone = Enumerable.Empty<IEvent>();
+            var expected = History.Create(expectedDone, expectedUndone);
+
+            var actual = History.Create();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CreateEmpty__Should_Return_New_Instance_With_Neither_Done_Nor_Undone_Events()
+        {
+            var expectedDone = Enumerable.Empty<IEvent>();
+            var expectedUndone = Enumerable.Empty<IEvent>();
+            var expected = History.Create(expectedDone, expectedUndone);
+
             var actual = History.CreateEmpty();
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void ClearDone__With_Injected_Done_And_Injected_Undone__Should_Return_New_Instance_With_Empty_Done_And_Injected_Undone()
+        public void ClearDone__With_Given_Done_And_Undone_Events__Should_Return_New_Instance_With_No_Done_And_Given_Undone_Events()
         {
-            var doneEvent = new EventStub(1);
-            var doneNext = new NullEventNode();
-            var done = new EventNode(doneEvent, doneNext);
-
-            var undoneEvent = new EventStub(2);
-            var undoneNext = new NullEventNode();
-            var undone = new EventNode(undoneEvent, undoneNext);
-
-            var target = new Builder().WithDone(done).WithUndone(undone).Build();
-
-            var expectedDone = new NullEventNode();
-            var expectedUndone = undone;
-
-            var expected = new Builder().WithDone(expectedDone).WithUndone(expectedUndone).Build();
+            var done = new IEvent[] { new EventStub(1) };
+            var undone = new IEvent[] { new EventStub(2) };
+            var target = History.Create(done, undone);
+            var expectedDone = Enumerable.Empty<IEvent>();
+            var expectedUndone = new IEvent[] { new EventStub(2) };
+            var expected = History.Create(expectedDone, expectedUndone);
 
             var actual = target.ClearDone();
 
@@ -58,22 +66,15 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void ClearUndone__With_Injected_Done_And_Injected_Undone__Should_Return_New_Instance_With_Injected_Done_And_Empty_Undone()
+        public void ClearUndone__With_Given_Done_And_Undone_Events__Should_Return_New_Instance_With_Given_Done_And_No_Undone_Events()
         {
-            var doneEvent = new EventStub(1);
-            var doneNext = new NullEventNode();
-            var done = new EventNode(doneEvent, doneNext);
+            var done = new IEvent[] { new EventStub(1) };
+            var undone = new IEvent[] { new EventStub(2) };
+            var target = History.Create(done, undone);
+            var expectedDone = new IEvent[] { new EventStub(1) };
+            var expectedUndone = Enumerable.Empty<IEvent>();
 
-            var undoneEvent = new EventStub(2);
-            var undoneNext = new NullEventNode();
-            var undone = new EventNode(undoneEvent, undoneNext);
-
-            var target = new Builder().WithDone(done).WithUndone(undone).Build();
-
-            var expectedDone = done;
-            var expectedUndone = new NullEventNode();
-
-            var expected = new Builder().WithDone(expectedDone).WithUndone(expectedUndone).Build();
+            var expected = History.Create(expectedDone, expectedUndone);
 
             var actual = target.ClearUndone();
 
@@ -81,45 +82,28 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void Do__With_Event__Should_Return_New_Instance_That_Represents_The_History_After_Performing_The_Do_Operation_Of_The_Event()
+        public void Do__With_Event__Should_Return_New_Instance_Whose_History_Of_Done_Events_Is_Extended_By_The_Result_Of_Doing_The_Specified_Event_Without_Any_Events_To_Redo()
         {
-            var done = new NullEventNode();
-            var undone = new NullEventNode();
-            var target = new Builder().WithDone(done).WithUndone(undone).Build();
-
-            var expectedEvent = new EventStub(1, 1, 0);
-            var expectedNext = done;
-            var expectedDone = new EventNode(expectedEvent, expectedNext);
-            var expectedUndone = new NullEventNode();
-
-            var expected = new Builder().WithDone(expectedDone).WithUndone(expectedUndone).Build();
-
+            var target = History.Create();
             var @event = new EventStub(1);
+            var expectedDone = new IEvent[] { new EventStub(1, 1, 0) };
+            var expectedUndone = Enumerable.Empty<IEvent>();
+            var expected = History.Create(expectedDone, expectedUndone);
+
             var actual = target.Do(@event);
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void Undo__Should_Return_New_Instance_That_Represents_The_History_After_Performing_The_Undo_Operation_Of_The_Next_Event_To_Undo()
+        public void Undo__With_Given_Done_Events__Should_Return_New_Instance_Whose_History_Of_Undone_Events_Is_Extended_By_The_Result_Of_Undoing_The_Recently_Done_Event_Having_The_History_Of_Done_Events_Truncated_By_The_Recently_Done_Event()
         {
-            var doneEvent = new EventStub(1);
-            var doneNext = new NullEventNode();
-            var done = new EventNode(doneEvent, doneNext);
-
-            var undoneEvent = new EventStub(2);
-            var undoneNext = new NullEventNode();
-            var undone = new EventNode(undoneEvent, undoneNext);
-
-            var target = new Builder().WithDone(done).WithUndone(undone).Build();
-
-            var expectedDone = new NullEventNode();
-
-            var expectedUndoneEvent = new EventStub(1, 0, 1);
-            var expectedUndoneNext = undone;
-            var expectedUndone = new EventNode(expectedUndoneEvent, expectedUndoneNext);
-
-            var expected = new Builder().WithDone(expectedDone).WithUndone(expectedUndone).Build();
+            var done = new IEvent[] { new EventStub(1) };
+            var undone = Enumerable.Empty<IEvent>();
+            var target = History.Create(done, undone);
+            var expectedDone = Enumerable.Empty<IEvent>();
+            var expectedUndone = new IEvent[] { new EventStub(1, 0, 1) };
+            var expected = History.Create(expectedDone, expectedUndone);
 
             var actual = target.Undo();
 
@@ -127,25 +111,14 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void Redo__Should_Return_New_Instance_That_Represents_The_History_After_Performing_The_Do_Operation_Of_The_Next_Event_To_Redo()
+        public void Redo__With_Given_Undone_Events__Should_Return_New_Instance_Whose_History_Of_Done_Events_Is_Extended_By_The_Result_Of_Doing_The_Recently_Undone_Event_Having_The_History_Of_Undone_Events_Truncated_By_The_Recently_Undone_Event()
         {
-            var doneEvent = new EventStub(1);
-            var doneNext = new NullEventNode();
-            var done = new EventNode(doneEvent, doneNext);
-
-            var undoneEvent = new EventStub(2);
-            var undoneNext = new NullEventNode();
-            var undone = new EventNode(undoneEvent, undoneNext);
-
-            var target = new Builder().WithDone(done).WithUndone(undone).Build();
-
-            var expectedDoneEvent = new EventStub(2, 1, 0);
-            var expectedDoneNext = done;
-            var expectedDone = new EventNode(expectedDoneEvent, expectedDoneNext);
-
-            var expectedUndone = new NullEventNode();
-
-            var expected = new Builder().WithDone(expectedDone).WithUndone(expectedUndone).Build();
+            var done = Enumerable.Empty<IEvent>();
+            var undone = new IEvent[] { new EventStub(1) };
+            var target = History.Create(done, undone);
+            var expectedDone = new IEvent[] { new EventStub(1, 1, 0) };
+            var expectedUndone = Enumerable.Empty<IEvent>();
+            var expected = History.Create(expectedDone, expectedUndone);
 
             var actual = target.Redo();
 
@@ -158,7 +131,7 @@ namespace ImmutableUndoRedo
         public void Equals__With_Null__Should_Return_False()
         {
             const bool expected = false;
-            var target = new Builder().Build();
+            var target = History.Create();
             var other = (History)null;
 
             var actual = target.Equals(other);
@@ -170,7 +143,7 @@ namespace ImmutableUndoRedo
         public void Equals__With_Same_Instance__Should_Return_True()
         {
             const bool expected = true;
-            var target = new Builder().Build();
+            var target = History.Create();
             var other = target;
 
             var actual = target.Equals(other);
@@ -182,9 +155,10 @@ namespace ImmutableUndoRedo
         public void Equals__With_Different_Done__Should_Return_False()
         {
             const bool expected = false;
-            var done = new EventNodeDummy();
-            var target = new Builder().WithDone(done).Build();
-            var other = new Builder().WithDone(null).Build();
+            var none = new IEvent[0];
+            var done = new IEvent[] { new EventStub(1) };
+            var target = History.Create(done, none);
+            var other = History.Create(none, none);
 
             var actual = target.Equals(other);
 
@@ -195,9 +169,10 @@ namespace ImmutableUndoRedo
         public void Equals__With_Different_Undone__Should_Return_False()
         {
             const bool expected = false;
-            var undone = new EventNodeDummy();
-            var target = new Builder().WithUndone(undone).Build();
-            var other = new Builder().WithUndone(null).Build();
+            var none = new IEvent[0];
+            var undone = new IEvent[] { new EventStub(1) };
+            var target = History.Create(none, undone);
+            var other = History.Create(none, none);
 
             var actual = target.Equals(other);
 
@@ -208,10 +183,10 @@ namespace ImmutableUndoRedo
         public void Equals__With_Same_Setup__Should_Return_True()
         {
             const bool expected = true;
-            var done = new EventNodeDummy(1);
-            var undone = new EventNodeDummy(2);
-            var target = new Builder().WithDone(done).WithUndone(undone).Build();
-            var other = new Builder().WithDone(done).WithUndone(undone).Build();
+            var done = new IEvent[] { new EventStub(1) };
+            var undone = new IEvent[] { new EventStub(2) };
+            var target = History.Create(done, undone);
+            var other = History.Create(done, undone);
 
             var actual = target.Equals(other);
 
@@ -222,7 +197,7 @@ namespace ImmutableUndoRedo
         public void Equals_Object__With_Null__Should_Return_False()
         {
             const bool expected = false;
-            var target = new Builder().Build();
+            var target = History.Create();
             var other = (History)null;
 
             var actual = target.Equals((object)other);
@@ -234,7 +209,7 @@ namespace ImmutableUndoRedo
         public void Equals_Object__With_Same_Instance__Should_Return_True()
         {
             const bool expected = true;
-            var target = new Builder().Build();
+            var target = History.Create();
             var other = target;
 
             var actual = target.Equals((object)other);
@@ -246,9 +221,10 @@ namespace ImmutableUndoRedo
         public void Equals_Object__With_Different_Done__Should_Return_False()
         {
             const bool expected = false;
-            var done = new EventNodeDummy();
-            var target = new Builder().WithDone(done).Build();
-            var other = new Builder().WithDone(null).Build();
+            var none = new IEvent[0];
+            var done = new IEvent[] { new EventStub(1) };
+            var target = History.Create(done, none);
+            var other = History.Create(none, none);
 
             var actual = target.Equals((object)other);
 
@@ -259,9 +235,10 @@ namespace ImmutableUndoRedo
         public void Equals_Object__With_Different_Undone__Should_Return_False()
         {
             const bool expected = false;
-            var undone = new EventNodeDummy();
-            var target = new Builder().WithUndone(undone).Build();
-            var other = new Builder().WithUndone(null).Build();
+            var none = new IEvent[0];
+            var undone = new IEvent[] { new EventStub(1) };
+            var target = History.Create(none, undone);
+            var other = History.Create(none, none);
 
             var actual = target.Equals((object)other);
 
@@ -272,10 +249,10 @@ namespace ImmutableUndoRedo
         public void Equals_Object__With_Same_Setup__Should_Return_True()
         {
             const bool expected = true;
-            var done = new EventNodeDummy(1);
-            var undone = new EventNodeDummy(2);
-            var target = new Builder().WithDone(done).WithUndone(undone).Build();
-            var other = new Builder().WithDone(done).WithUndone(undone).Build();
+            var done = new IEvent[] { new EventStub(1) };
+            var undone = new IEvent[] { new EventStub(2) };
+            var target = History.Create(done, undone);
+            var other = History.Create(done, undone);
 
             var actual = target.Equals((object)other);
 
@@ -298,7 +275,7 @@ namespace ImmutableUndoRedo
         public void Op_Equality__With_Instance_For_Left_And_Null_For_Right__Should_Return_False()
         {
             const bool expected = false;
-            var left = new Builder().Build();
+            var left = History.Create();
             var right = (History)null;
 
             var actual = left == right;
@@ -306,13 +283,12 @@ namespace ImmutableUndoRedo
             Assert.AreEqual(expected, actual);
         }
 
-
         [TestMethod]
         public void Op_Equality__With_Null_For_Left_And_Instance_For_Right__Should_Return_False()
         {
             const bool expected = false;
             var left = (History)null;
-            var right = new Builder().Build();
+            var right = History.Create();
 
             var actual = left == right;
 
@@ -323,7 +299,7 @@ namespace ImmutableUndoRedo
         public void Op_Equality__With_Same_Instance__Should_Return_True()
         {
             const bool expected = true;
-            var left = new Builder().Build();
+            var left = History.Create();
             var right = left;
 
             var actual = left == right;
@@ -335,9 +311,10 @@ namespace ImmutableUndoRedo
         public void Op_Equality__With_Different_Done__Should_Return_False()
         {
             const bool expected = false;
-            var done = new EventNodeDummy();
-            var left = new Builder().WithDone(done).Build();
-            var right = new Builder().WithDone(null).Build();
+            var none = new IEvent[0];
+            var done = new IEvent[] { new EventStub(1) };
+            var left = History.Create(done, none);
+            var right = History.Create(none, none);
 
             var actual = left == right;
 
@@ -348,9 +325,10 @@ namespace ImmutableUndoRedo
         public void Op_Equality__With_Different_Undone__Should_Return_False()
         {
             const bool expected = false;
-            var undone = new EventNodeDummy();
-            var left = new Builder().WithUndone(undone).Build();
-            var right = new Builder().WithUndone(null).Build();
+            var none = new IEvent[0];
+            var undone = new IEvent[] { new EventStub(1) };
+            var left = History.Create(none, undone);
+            var right = History.Create(none, none);
 
             var actual = left == right;
 
@@ -361,12 +339,12 @@ namespace ImmutableUndoRedo
         public void Op_Equality__With_Same_Setup__Should_Return_True()
         {
             const bool expected = true;
-            var done = new EventNodeDummy(1);
-            var undone = new EventNodeDummy(2);
-            var target1 = new Builder().WithDone(done).WithUndone(undone).Build();
-            var target2 = new Builder().WithDone(done).WithUndone(undone).Build();
+            var done = new IEvent[] { new EventStub(1) };
+            var undone = new IEvent[] { new EventStub(2) };
+            var left = History.Create(done, undone);
+            var right = History.Create(done, undone);
 
-            var actual = target1 == target2;
+            var actual = left == right;
 
             Assert.AreEqual(expected, actual);
         }
@@ -387,7 +365,7 @@ namespace ImmutableUndoRedo
         public void Op_Inequality__With_Instance_For_Left_And_Null_For_Right__Should_Return_True()
         {
             const bool expected = true;
-            var left = new Builder().Build();
+            var left = History.Create();
             var right = (History)null;
 
             var actual = left != right;
@@ -400,7 +378,7 @@ namespace ImmutableUndoRedo
         {
             const bool expected = true;
             var left = (History)null;
-            var right = new Builder().Build();
+            var right = History.Create();
 
             var actual = left != right;
 
@@ -411,7 +389,7 @@ namespace ImmutableUndoRedo
         public void Op_Inequality__With_Same_Instance__Should_Return_False()
         {
             const bool expected = false;
-            var left = new Builder().Build();
+            var left = History.Create();
             var right = left;
 
             var actual = left != right;
@@ -423,9 +401,10 @@ namespace ImmutableUndoRedo
         public void Op_Inequality__With_Different_Done__Should_Return_True()
         {
             const bool expected = true;
-            var done = new EventNodeDummy();
-            var left = new Builder().WithDone(done).Build();
-            var right = new Builder().WithDone(null).Build();
+            var none = new IEvent[0];
+            var done = new IEvent[] { new EventStub(1) };
+            var left = History.Create(done, none);
+            var right = History.Create(none, none);
 
             var actual = left != right;
 
@@ -436,9 +415,10 @@ namespace ImmutableUndoRedo
         public void Op_Inequality__With_Different_Undone__Should_Return_True()
         {
             const bool expected = true;
-            var undone = new EventNodeDummy();
-            var left = new Builder().WithUndone(undone).Build();
-            var right = new Builder().WithUndone(null).Build();
+            var none = new IEvent[0];
+            var undone = new IEvent[] { new EventStub(1) };
+            var left = History.Create(none, undone);
+            var right = History.Create(none, none);
 
             var actual = left != right;
 
@@ -449,12 +429,12 @@ namespace ImmutableUndoRedo
         public void Op_Inequality__With_Same_Setup__Should_Return_False()
         {
             const bool expected = false;
-            var done = new EventNodeDummy(1);
-            var undone = new EventNodeDummy(2);
-            var target1 = new Builder().WithDone(done).WithUndone(undone).Build();
-            var target2 = new Builder().WithDone(done).WithUndone(undone).Build();
+            var done = new IEvent[] { new EventStub(1) };
+            var undone = new IEvent[] { new EventStub(2) };
+            var left = History.Create(done, undone);
+            var right = History.Create(done, undone);
 
-            var actual = target1 != target2;
+            var actual = left != right;
 
             Assert.AreEqual(expected, actual);
         }
@@ -462,46 +442,14 @@ namespace ImmutableUndoRedo
         [TestMethod]
         public void GetHashCode__With_Same_Setup__Should_Return_Same_Hash_Code()
         {
-            var done = new EventNodeDummy(1);
-            var undone = new EventNodeDummy(2);
-            var target1 = new Builder().WithDone(done).WithUndone(undone).Build();
-            var target2 = new Builder().WithDone(done).WithUndone(undone).Build();
+            var done = new IEvent[] { new EventStub(1) };
+            var undone = new IEvent[] { new EventStub(2) };
+            var target1 = History.Create(done, undone);
+            var target2 = History.Create(done, undone);
 
             Assert.AreEqual(target1.GetHashCode(), target2.GetHashCode());
         }
 
         #endregion
-
-        private sealed class Builder
-        {
-            private readonly IEventNode done;
-
-            private readonly IEventNode undone;
-
-            public Builder()
-            {
-            }
-
-            private Builder(IEventNode done, IEventNode undone)
-            {
-                this.done = done;
-                this.undone = undone;
-            }
-
-            public History Build()
-            {
-                return new History(this.done, this.undone);
-            }
-
-            public Builder WithDone(IEventNode value)
-            {
-                return new Builder(value, this.undone);
-            }
-
-            public Builder WithUndone(IEventNode value)
-            {
-                return new Builder(this.done, value);
-            }
-        }
     }
 }

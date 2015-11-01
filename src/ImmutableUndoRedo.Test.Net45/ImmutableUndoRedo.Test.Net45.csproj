@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -42,12 +44,6 @@
     <Compile Include="..\ImmutableUndoRedo.Test\EventDummy.cs">
       <Link>EventDummy.cs</Link>
     </Compile>
-    <Compile Include="..\ImmutableUndoRedo.Test\EventNodeDummy.cs">
-      <Link>EventNodeDummy.cs</Link>
-    </Compile>
-    <Compile Include="..\ImmutableUndoRedo.Test\EventNodeTests.cs">
-      <Link>EventNodeTests.cs</Link>
-    </Compile>
     <Compile Include="..\ImmutableUndoRedo.Test\EventStub.cs">
       <Link>EventStub.cs</Link>
     </Compile>
@@ -56,9 +52,6 @@
     </Compile>
     <Compile Include="..\ImmutableUndoRedo.Test\HistoryTests.cs">
       <Link>HistoryTests.cs</Link>
-    </Compile>
-    <Compile Include="..\ImmutableUndoRedo.Test\NullEventNodeTests.cs">
-      <Link>NullEventNodeTests.cs</Link>
     </Compile>
     <Compile Include="..\ImmutableUndoRedo.Test\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

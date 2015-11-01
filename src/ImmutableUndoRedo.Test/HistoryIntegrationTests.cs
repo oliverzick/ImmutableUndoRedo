@@ -20,37 +20,41 @@
 
 namespace ImmutableUndoRedo
 {
+    using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class HistoryIntegrationTests
     {
         [TestMethod]
-        public void Do__With_Event__Should_Return_New_Instance_That_Represents_The_History_After_Performing_The_Do_Operation_Of_The_Event()
+        public void Do__With_Event__Should_Return_New_Instance_Whose_History_Of_Done_Events_Is_Extended_By_The_Result_Of_Doing_The_Specified_Event_Without_Any_Events_To_Redo()
         {
-            var done = new EventNode(
-                new EventStub(11, 0, 0),
-                new EventNode(
-                    new EventStub(10, 0, 0),
-                    new NullEventNode()));
+            var done = new IEvent[]
+                       {
+                           new EventStub(10, 0, 0),
+                           new EventStub(11, 0, 0),
+                       };
 
-            var undone = new EventNode(
-                new EventStub(21, 0, 0),
-                new EventNode(
-                    new EventStub(20, 0, 0),
-                    new NullEventNode()));
+            var undone = new IEvent[]
+                         {
+                             new EventStub(20, 0, 0),
+                             new EventStub(21, 0, 0),
+                         };
 
-            var target = new History(done, undone);
+            var target = History.Create(done, undone);
+
+            var expectedDone = new IEvent[]
+                               {
+                                   new EventStub(10, 0, 0),
+                                   new EventStub(11, 0, 0),
+                                   new EventStub(12, 1, 0),
+                               };
+
+            var expectedUndone = Enumerable.Empty<IEvent>();
+
+            var expected = History.Create(expectedDone, expectedUndone);
 
             var @event = new EventStub(12, 0, 0);
-
-            var expectedDone = new EventNode(
-                new EventStub(12, 1, 0),
-                done);
-
-            var expectedUndone = new NullEventNode();
-
-            var expected = new History(expectedDone, expectedUndone);
 
             var actual = target.Do(@event);
 
@@ -58,45 +62,11 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void Undo__With_Empty_History__Should_Return_Empty_History()
+        public void Undo__Empty_History__Should_Return_Empty_History()
         {
-            var target = History.CreateEmpty();
+            var expected = History.Create();
 
-            var actual = target.Undo();
-
-            Assert.AreEqual(target, actual);
-        }
-
-        [TestMethod]
-        public void Undo__Should_Return_New_Instance_That_Represents_The_History_After_Performing_The_Undo_Operation_Of_The_Next_Event_To_Undo()
-        {
-            var done = new EventNode(
-                new EventStub(11, 0, 0),
-                new EventNode(
-                    new EventStub(10, 0, 0),
-                    new NullEventNode()));
-
-            var undone = new EventNode(
-                new EventStub(21, 0, 0),
-                new EventNode(
-                    new EventStub(20, 0, 0),
-                    new NullEventNode()));
-
-            var target = new History(done, undone);
-
-            var expectedDone = new EventNode(
-                new EventStub(10, 0, 0),
-                 new NullEventNode());
-
-            var expectedUndone = new EventNode(
-                new EventStub(11, 0, 1),
-                new EventNode(
-                    new EventStub(21, 0, 0),
-                    new EventNode(
-                        new EventStub(20, 0, 0),
-                        new NullEventNode())));
-
-            var expected = new History(expectedDone, expectedUndone);
+            var target = History.Create();
 
             var actual = target.Undo();
 
@@ -104,45 +74,83 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void Redo__With_Empty_History__Should_Return_Empty_History()
+        public void Undo__With_Given_Done_And_Undone_Events__Should_Return_New_Instance_Whose_History_Of_Undone_Events_Is_Extended_By_The_Result_Of_Undoing_The_Recently_Done_Event_Having_The_History_Of_Done_Events_Truncated_By_The_Recently_Done_Event()
         {
-            var target = History.CreateEmpty();
+            var done = new IEvent[]
+                       {
+                           new EventStub(10, 0, 0),
+                           new EventStub(11, 0, 0),
+                       };
 
-            var actual = target.Redo();
+            var undone = new IEvent[]
+                         {
+                             new EventStub(20, 0, 0),
+                             new EventStub(21, 0, 0),
+                         };
 
-            Assert.AreEqual(target, actual);
+            var target = History.Create(done, undone);
+
+            var expectedDone = new IEvent[]
+                               {
+                                   new EventStub(10, 0, 0),
+                               };
+
+            var expectedUndone = new IEvent[]
+                                 {
+                                     new EventStub(20, 0, 0),
+                                     new EventStub(21, 0, 0),
+                                     new EventStub(11, 0, 1),
+                                 };
+
+            var expected = History.Create(expectedDone, expectedUndone);
+
+            var actual = target.Undo();
+
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void Redo__Should_Return_New_Instance_That_Represents_The_History_After_Performing_The_Do_Operation_Of_The_Next_Event_To_Redo()
+        public void Redo__Empty_History__Should_Return_Empty_History()
         {
-            var done = new EventNode(
-                new EventStub(11, 0, 0),
-                new EventNode(
-                    new EventStub(10, 0, 0),
-                    new NullEventNode()));
+            var expected = History.Create();
 
-            var undone = new EventNode(
-                new EventStub(21, 0, 0),
-                new EventNode(
-                    new EventStub(20, 0, 0),
-                    new NullEventNode()));
+            var target = History.Create();
 
-            var target = new History(done, undone);
+            var actual = target.Redo();
 
-            var expectedDone = new EventNode(
-                new EventStub(21, 1, 0),
-                new EventNode(
-                    new EventStub(11, 0, 0),
-                    new EventNode(
-                        new EventStub(10, 0, 0),
-                        new NullEventNode())));
+            Assert.AreEqual(expected, actual);
+        }
 
-            var expectedUndone = new EventNode(
-                new EventStub(20, 0, 0),
-                 new NullEventNode());
+        [TestMethod]
+        public void Redo__With_Given_Done_And_Undone_Events__Should_Return_New_Instance_Whose_History_Of_Done_Events_Is_Extended_By_The_Result_Of_Doing_The_Recently_Undone_Event_Having_The_History_Of_Undone_Events_Truncated_By_The_Recently_Undone_Event()
+        {
+            var done = new IEvent[]
+                       {
+                           new EventStub(10, 0, 0),
+                           new EventStub(11, 0, 0),
+                       };
 
-            var expected = new History(expectedDone, expectedUndone);
+            var undone = new IEvent[]
+                         {
+                             new EventStub(20, 0, 0),
+                             new EventStub(21, 0, 0),
+                         };
+
+            var target = History.Create(done, undone);
+
+            var expectedDone = new IEvent[]
+                               {
+                                   new EventStub(10, 0, 0),
+                                   new EventStub(11, 0, 0),
+                                   new EventStub(21, 1, 0),
+                               };
+
+            var expectedUndone = new IEvent[]
+                                 {
+                                     new EventStub(20, 0, 0),
+                                 };
+
+            var expected = History.Create(expectedDone, expectedUndone);
 
             var actual = target.Redo();
 
