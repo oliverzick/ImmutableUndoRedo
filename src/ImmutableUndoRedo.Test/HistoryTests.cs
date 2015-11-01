@@ -20,6 +20,7 @@
 
 namespace ImmutableUndoRedo
 {
+    using System.Collections.Generic;
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -79,6 +80,34 @@ namespace ImmutableUndoRedo
             var actual = target.ClearUndone();
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CopyDoneTo__With_Collection__Should_Copy_The_Done_Events_In_Chronological_Order_To_The_Given_Collection()
+        {
+            var done = new IEvent[] { new EventStub(11), new EventStub(12), new EventStub(13) };
+            var undone = new IEvent[] { new EventStub(21), new EventStub(22), new EventStub(23) };
+            var target = History.Create(done, undone);
+            var expected = new List<IEvent>(done);
+            var actual = new List<IEvent>();
+
+            target.CopyDoneTo(actual);
+
+            CollectionAssert.AreEquivalent(expected, actual);
+        }
+
+        [TestMethod]
+        public void CopyUndoneTo__With_Collection__Should_Copy_The_Undone_Events_In_Chronological_Order_To_The_Given_Collection()
+        {
+            var done = new IEvent[] { new EventStub(11), new EventStub(12), new EventStub(13) };
+            var undone = new IEvent[] { new EventStub(21), new EventStub(22), new EventStub(23) };
+            var target = History.Create(done, undone);
+            var expected = new List<IEvent>(undone);
+            var actual = new List<IEvent>();
+
+            target.CopyUndoneTo(actual);
+
+            CollectionAssert.AreEquivalent(expected, actual);
         }
 
         [TestMethod]

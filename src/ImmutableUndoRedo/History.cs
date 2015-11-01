@@ -179,6 +179,28 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
+        /// Copies the done events in chronological order to the specified <paramref name="collection"/>.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection of events to which the done events are copied.
+        /// </param>
+        public void CopyDoneTo(ICollection<IEvent> collection)
+        {
+            this.done.CopyTo(collection);
+        }
+
+        /// <summary>
+        /// Copies the undone events in chronological order to the specified <paramref name="collection"/>.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection of events to which the undone events are copied.
+        /// </param>
+        public void CopyUndoneTo(ICollection<IEvent> collection)
+        {
+            this.undone.CopyTo(collection);
+        }
+
+        /// <summary>
         /// Returns a new <see cref="History"/> whose history of done events
         /// is extended by the result of doing the specified <paramref name="event"/>,
         /// without any events to redo.

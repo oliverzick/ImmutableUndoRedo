@@ -83,6 +83,14 @@ namespace ImmutableUndoRedo
             return node.Concatenate(this);
         }
 
+        public void CopyTo(ICollection<T> collection)
+        {
+            foreach (var item in this.EnumerateElements().Reverse())
+            {
+                item.CopyTo(collection);
+            }
+        }
+
         private bool HasNext()
         {
             return this.element.HasNext();
@@ -118,6 +126,8 @@ namespace ImmutableUndoRedo
 
             IElement Concatenate(IElement newNext);
 
+            void CopyTo(ICollection<T> collection);
+
             bool HasNext();
 
             IElement Next();
@@ -143,6 +153,11 @@ namespace ImmutableUndoRedo
             public IElement Concatenate(IElement newNext)
             {
                 return new Element(this.value, newNext);
+            }
+
+            public void CopyTo(ICollection<T> collection)
+            {
+                collection.Add(this.value);
             }
 
             public bool HasNext()
@@ -186,6 +201,10 @@ namespace ImmutableUndoRedo
             public IElement Concatenate(IElement newNext)
             {
                 return newNext;
+            }
+
+            public void CopyTo(ICollection<T> collection)
+            {
             }
 
             public bool HasNext()
