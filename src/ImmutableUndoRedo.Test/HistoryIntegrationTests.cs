@@ -62,7 +62,7 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void Undo__Empty_History__Should_Return_Empty_History()
+        public void Undo__With_Empty_History__Should_Return_Empty_History()
         {
             var expected = History.Create();
 
@@ -110,7 +110,7 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void Redo__Empty_History__Should_Return_Empty_History()
+        public void Redo__With_Empty_History__Should_Return_Empty_History()
         {
             var expected = History.Create();
 
