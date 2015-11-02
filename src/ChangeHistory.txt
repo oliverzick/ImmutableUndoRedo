@@ -7,7 +7,7 @@ Change history:
 
 Version 1.2.0:
 
-	- Issue #3: Enable History to tell done and undone events
+	- Issue #2: Enable History to tell done and undone events
 	- Drop support for .NET Framework version 3.5
 
 Version 1.1.1:
