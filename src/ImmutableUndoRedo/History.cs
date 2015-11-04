@@ -201,8 +201,8 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
-        /// Returns a new <see cref="History"/> whose history of done events
-        /// is extended by the result of doing the specified <paramref name="event"/>,
+        /// Returns a new <see cref="History"/> whose done events
+        /// are extended by the result of doing the specified <paramref name="event"/>,
         /// without any events to redo.
         /// </summary>
         /// <param name="event">
@@ -210,8 +210,8 @@ namespace ImmutableUndoRedo
         /// is the next event to undo.
         /// </param>
         /// <returns>
-        /// A new <see cref="History"/> whose history of done events
-        /// is extended by the result of performing the <see cref="IEvent.Do"/>
+        /// A new <see cref="History"/> whose done events
+        /// are extended by the result of performing the <see cref="IEvent.Do"/>
         /// method of the specified <paramref name="event"/>,
         /// without any events to redo.
         /// </returns>
@@ -223,15 +223,15 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
-        /// Returns a new <see cref="History"/> whose history of undone events
-        /// is extended by the result of undoing the recently done event,
-        /// having the history of done events truncated by the recently done event.
+        /// Returns a new <see cref="History"/> whose undone events
+        /// are extended by the result of undoing the recently done event,
+        /// having the done events truncated by the recently done event.
         /// </summary>
         /// <returns>
-        /// Returns a new <see cref="History"/> whose history of undone events
-        /// is extended by the result of performing the <see cref="IEvent.Undo"/>
+        /// Returns a new <see cref="History"/> whose undone events
+        /// are extended by the result of performing the <see cref="IEvent.Undo"/>
         /// method of the recently done event,
-        /// having the history of done events truncated by the recently done event.
+        /// having the done events truncated by the recently done event.
         /// If this instance does not contain any done events,
         /// the method returns a new <see cref="History"/> that is identical to this instance.
         /// </returns>
@@ -243,15 +243,15 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
-        /// Returns a new <see cref="History"/> whose history of done events
-        /// is extended by the result of doing the recently undone event,
-        /// having the history of undone events truncated by the recently undone event.
+        /// Returns a new <see cref="History"/> whose done events
+        /// are extended by the result of doing the recently undone event,
+        /// having the undone events truncated by the recently undone event.
         /// </summary>
         /// <returns>
-        /// Returns a new <see cref="History"/> whose history of done events
-        /// is extended by the result of performing the <see cref="IEvent.Do"/>
+        /// Returns a new <see cref="History"/> whose done events
+        /// are extended by the result of performing the <see cref="IEvent.Do"/>
         /// method of the recently undone event,
-        /// having the history of undone events truncated by the recently undone event.
+        /// having the undone events truncated by the recently undone event.
         /// If this instance does not contain any undone events,
         /// the method returns a new <see cref="History"/> that is identical to this instance.
         /// </returns>
