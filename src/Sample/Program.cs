@@ -27,7 +27,7 @@ namespace ImmutableUndoRedo
         static void Main(string[] args)
         {
             // Create history instance without any done or undone events
-            var history = History.CreateEmpty();
+            var history = History.Create();
 
             // Current history:
             // Done:    (none)
