@@ -110,6 +110,26 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
+        public void Undo__Without_Any_Done_Events__Should_Return_Identical_Instance()
+        {
+            var done = new IEvent[] { };
+
+            var undone = new IEvent[]
+                         {
+                             new EventStub(20, 0, 0),
+                             new EventStub(21, 0, 0),
+                         };
+
+            var target = History.Create(done, undone);
+
+            var expected = History.Create(done, undone);
+
+            var actual = target.Undo();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void Redo__On_Empty_History__Should_Return_Empty_History()
         {
             var expected = History.Create();
@@ -151,6 +171,26 @@ namespace ImmutableUndoRedo
                                  };
 
             var expected = History.Create(expectedDone, expectedUndone);
+
+            var actual = target.Redo();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Redo__Without_Any_Undone_Events__Should_Return_Identical_Instance()
+        {
+            var done = new IEvent[]
+                       {
+                           new EventStub(10, 0, 0),
+                           new EventStub(11, 0, 0),
+                       };
+
+            var undone = new IEvent[] { };
+
+            var target = History.Create(done, undone);
+
+            var expected = History.Create(done, undone);
 
             var actual = target.Redo();
 

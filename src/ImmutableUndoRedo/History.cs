@@ -232,6 +232,8 @@ namespace ImmutableUndoRedo
         /// is extended by the result of performing the <see cref="IEvent.Undo"/>
         /// method of the recently done event,
         /// having the history of done events truncated by the recently done event.
+        /// If this instance does not contain any done events,
+        /// the method returns a new <see cref="History"/> that is identical to this instance.
         /// </returns>
         public History Undo()
         {
@@ -250,6 +252,8 @@ namespace ImmutableUndoRedo
         /// is extended by the result of performing the <see cref="IEvent.Do"/>
         /// method of the recently undone event,
         /// having the history of undone events truncated by the recently undone event.
+        /// If this instance does not contain any undone events,
+        /// the method returns a new <see cref="History"/> that is identical to this instance.
         /// </returns>
         public History Redo()
         {
