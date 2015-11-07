@@ -21,77 +21,32 @@
 namespace ImmutableUndoRedo
 {
     using System;
+    using System.Collections.Generic;
 
     class Program
     {
         static void Main(string[] args)
         {
-            // Create history instance without any done or undone events
-            var history = History.Create();
+            var history = History.Create()
+                                 .Do(new Event(1))
+                                 .Do(new Event(2))
+                                 .Do(new Event(3))
+                                 .Do(new Event(4))
+                                 .Do(new Event(5))
+                                 .Undo()
+                                 .Undo()
+                                 .Undo()
+                                 .Redo();
 
-            // Current history:
-            // Done:    (none)
-            // Undone:  (none)
+            Console.WriteLine("\n\nDone events:");
+            List<IEvent> doneEvents = new List<IEvent>();
+            history.CopyDoneTo(doneEvents);
+            doneEvents.ForEach(Console.WriteLine);
 
-            // Perform 'Do' operation of event #1 and
-            // use resulting event as next event to undo.
-            // Empty undone events.
-            history = history.Do(new Event(1));
-
-            // Current history:
-            // Done:    #1
-            // Undone:  (none)
-
-            // Perform 'Do' operation of event #2 and
-            // use resulting event as next event to undo.
-            // Empty undone events.
-            history = history.Do(new Event(2));
-
-            // Current history:
-            // Done:    #2 -> #1
-            // Undone:  (none)
-
-            // Perform 'Do' operation of event #3 and
-            // use resulting event as next event to undo.
-            // Empty undone events.
-            history = history.Do(new Event(3));
-
-            // Current history:
-            // Done:    #3 -> #2 -> #1
-            // Undone:  (none)
-
-            // Perform 'Undo' operation of event #3 and
-            // use resulting event as next event to redo.
-            history = history.Undo();
-
-            // Current history:
-            // Done:    #2 -> #1
-            // Undone:  #3
-
-            // Perform 'Undo' operation of event #2 and
-            // use resulting event as next event to redo.
-            history = history.Undo();
-
-            // Current history:
-            // Done:    #1
-            // Undone:  #2 -> #3
-
-            // Perform 'Do' operation of event #2 and
-            // use resulting event as next event to undo.
-            history = history.Redo();
-
-            // Current history:
-            // Done:    #2 -> #1
-            // Undone:  #3
-
-            // Perform 'Do' operation of event #4 and 
-            // use resulting event as next event to undo.
-            // Empties undone events.
-            history = history.Do(new Event(4));
-
-            // Current history:
-            // Done:    #4 -> #2 -> #1
-            // Undone:  (none)
+            Console.WriteLine("\n\nUndone events:");
+            List<IEvent> undoneEvents = new List<IEvent>();
+            history.CopyUndoneTo(undoneEvents);
+            undoneEvents.ForEach(Console.WriteLine);
 
             Console.ReadLine();
         }

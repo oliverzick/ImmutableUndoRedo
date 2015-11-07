@@ -26,9 +26,9 @@ namespace ImmutableUndoRedo
     {
         private readonly int id;
 
-        private readonly int totalDo;
+        private readonly int doCalls;
 
-        private readonly int totalUndo;
+        private readonly int undoCalls;
 
         public Event(int id)
             : this()
@@ -36,25 +36,30 @@ namespace ImmutableUndoRedo
             this.id = id;
         }
 
-        private Event(int id, int totalDo, int totalUndo)
+        private Event(int id, int doCalls, int undoCalls)
             : this(id)
         {
-            this.totalDo = totalDo;
-            this.totalUndo = totalUndo;
+            this.doCalls = doCalls;
+            this.undoCalls = undoCalls;
         }
 
         public IEvent Do()
         {
-            Console.WriteLine("Do   event #{0} (total 'Do': {1} | total 'Undo': {2})", this.id, this.totalDo + 1, this.totalUndo);
+            Console.WriteLine("Do event #{0}", this.id);
 
-            return new Event(this.id, this.totalDo + 1, this.totalUndo);
+            return new Event(this.id, this.doCalls + 1, this.undoCalls);
         }
 
         public IEvent Undo()
         {
-            Console.WriteLine("Undo event #{0} (total 'Do': {1} | total 'Undo': {2})", this.id, this.totalDo, this.totalUndo + 1);
+            Console.WriteLine("Undo event #{0}", this.id);
 
-            return new Event(this.id, this.totalDo, this.totalUndo + 1);
+            return new Event(this.id, this.doCalls, this.undoCalls + 1);
+        }
+
+        public override string ToString()
+        {
+            return $"Event {{Id = {this.id}, #Do calls = {this.doCalls}, #Undo calls = {this.undoCalls}}}";
         }
     }
 }
