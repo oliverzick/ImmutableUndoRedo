@@ -1,5 +1,5 @@
 ﻿#region Copyright and license
-// // <copyright file="Node.cs" company="Oliver Zick">
+// // <copyright file="Timeline.cs" company="Oliver Zick">
 // //     Copyright (c) 2015 Oliver Zick. All rights reserved.
 // // </copyright>
 // // <author>Oliver Zick</author>
@@ -24,81 +24,81 @@ namespace ImmutableUndoRedo
     using System.Collections.Generic;
     using System.Linq;
 
-    internal sealed class Node<T> : IEquatable<Node<T>>, IContentEquatable<Node<T>>
+    internal sealed class Timeline<T> : IEquatable<Timeline<T>>, IContentEquatable<Timeline<T>>
     {
-        private readonly IElement element;
+        private readonly INode node;
 
-        private Node(IElement element)
+        private Timeline(INode node)
         {
-            this.element = element;
+            this.node = node;
         }
 
-        public static Node<T> Create(T value, Node<T>  next)
+        public static Timeline<T> Create(T value, Timeline<T>  next)
         {
-            return new Node<T>(new Element(value, next.element));
+            return new Timeline<T>(new Node(value, next.node));
         }
 
-        public static Node<T> Create(IEnumerable<T> values)
+        public static Timeline<T> Create(IEnumerable<T> values)
         {
-            return values.Aggregate(None(), (current, value) => Create(value, current));
+            return values.Aggregate(Empty(), (current, value) => Create(value, current));
         }
 
-        public static Node<T> None()
+        public static Timeline<T> Empty()
         {
-            return new Node<T>(new NullElement());
+            return new Timeline<T>(new NullNode());
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Node<T>);
+            return this.Equals(obj as Timeline<T>);
         }
 
-        public bool Equals(Node<T> other)
+        public bool Equals(Timeline<T> other)
         {
             return ValueSemantics.Equals(this, other);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Calculate(this.EnumerateElements().Select(item => (HashCode)item.GetHashCode()));
+            return HashCode.Calculate(this.AllNodesReverse().Select(item => (HashCode)item.GetHashCode()));
         }
 
-        public Node<T> Apply(Func<T, T> action)
+        public Timeline<T> Apply(Func<T, T> action)
         {
-            return new Node<T>(this.element.Apply(action));
+            return new Timeline<T>(this.node.Apply(action));
         }
 
-        public Node<T> Concatenate(Node<T> node)
+        public Timeline<T> Concatenate(Timeline<T> timeline)
         {
-            return new Node<T>(this.element.Concatenate(node.element));
-        } 
-
-        public Node<T> Next()
-        {
-            return new Node<T>(this.element.Next());
-        }
-
-        public Node<T> Prepend(Node<T> node)
-        {
-            return node.Concatenate(this);
+            return new Timeline<T>(this.node.Concatenate(timeline.node));
         }
 
         public void CopyTo(ICollection<T> collection)
         {
-            foreach (var item in this.EnumerateElements().Reverse())
+            foreach (var item in this.AllNodes())
             {
                 item.CopyTo(collection);
             }
         }
 
-        private bool HasNext()
+        public Timeline<T> Next()
         {
-            return this.element.HasNext();
+            return new Timeline<T>(this.node.Next());
         }
 
-        private IEnumerable<Node<T>> Enumerate()
+        public Timeline<T> Prepend(Timeline<T> timeline)
         {
-            var current = this;
+            return timeline.Concatenate(this);
+        }
+
+        private IEnumerable<INode> AllNodes()
+        {
+            return this.AllNodesReverse().Reverse();
+        }
+
+        private IEnumerable<INode> AllNodesReverse()
+        {
+            var current = this.node;
 
             while (current.HasNext())
             {
@@ -110,49 +110,44 @@ namespace ImmutableUndoRedo
             yield return current;
         }
 
-        private IEnumerable<IElement> EnumerateElements()
+        bool IContentEquatable<Timeline<T>>.ContentEquals(Timeline<T> other)
         {
-            return this.Enumerate().Select(node => node.element);
+            return this.AllNodesReverse().SequenceEqual(other.AllNodesReverse());
         }
 
-        bool IContentEquatable<Node<T>>.ContentEquals(Node<T> other)
+        private interface INode
         {
-            return this.EnumerateElements().SequenceEqual(other.EnumerateElements());
-        }
+            INode Apply(Func<T, T> action);
 
-        private interface IElement
-        {
-            IElement Apply(Func<T, T> action);
-
-            IElement Concatenate(IElement newNext);
+            INode Concatenate(INode newNext);
 
             void CopyTo(ICollection<T> collection);
 
             bool HasNext();
 
-            IElement Next();
+            INode Next();
         }
 
-        private sealed class Element : IElement, IEquatable<Element>, IContentEquatable<Element>
+        private sealed class Node : INode, IEquatable<Node>, IContentEquatable<Node>
         {
             private readonly T value;
 
-            private readonly IElement next;
+            private readonly INode next;
 
-            public Element(T value, IElement next)
+            public Node(T value, INode next)
             {
                 this.value = value;
                 this.next = next;
             }
 
-            public IElement Apply(Func<T, T> action)
+            public INode Apply(Func<T, T> action)
             {
-                return new Element(action(this.value), this.next);
+                return new Node(action(this.value), this.next);
             }
 
-            public IElement Concatenate(IElement newNext)
+            public INode Concatenate(INode newNext)
             {
-                return new Element(this.value, newNext);
+                return new Node(this.value, newNext);
             }
 
             public void CopyTo(ICollection<T> collection)
@@ -165,17 +160,17 @@ namespace ImmutableUndoRedo
                 return true;
             }
 
-            public IElement Next()
+            public INode Next()
             {
                 return this.next;
             }
 
             public override bool Equals(object obj)
             {
-                return this.Equals(obj as Element);
+                return this.Equals(obj as Node);
             }
 
-            public bool Equals(Element other)
+            public bool Equals(Node other)
             {
                 return ValueSemantics.Equals(this, other);
             }
@@ -185,20 +180,20 @@ namespace ImmutableUndoRedo
                 return this.value.GetHashCode();
             }
 
-            bool IContentEquatable<Element>.ContentEquals(Element other)
+            bool IContentEquatable<Node>.ContentEquals(Node other)
             {
                 return object.Equals(this.value, other.value);
             }
         }
 
-        private sealed class NullElement : IElement, IEquatable<NullElement>
+        private sealed class NullNode : INode, IEquatable<NullNode>
         {
-            public IElement Apply(Func<T, T> action)
+            public INode Apply(Func<T, T> action)
             {
                 return this;
             }
 
-            public IElement Concatenate(IElement newNext)
+            public INode Concatenate(INode newNext)
             {
                 return newNext;
             }
@@ -212,17 +207,17 @@ namespace ImmutableUndoRedo
                 return false;
             }
 
-            public IElement Next()
+            public INode Next()
             {
                 return this;
             }
 
             public override bool Equals(object obj)
             {
-                return this.Equals(obj as NullElement);
+                return this.Equals(obj as NullNode);
             }
 
-            public bool Equals(NullElement other)
+            public bool Equals(NullNode other)
             {
                 return !object.ReferenceEquals(other, null);
             }

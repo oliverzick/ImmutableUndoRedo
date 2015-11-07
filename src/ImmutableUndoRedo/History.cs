@@ -31,11 +31,11 @@ namespace ImmutableUndoRedo
     /// </remarks>
     public sealed class History : IEquatable<History>, IContentEquatable<History>
     {
-        private readonly Node<IEvent> done;
+        private readonly Timeline<IEvent> done;
 
-        private readonly Node<IEvent> undone;
+        private readonly Timeline<IEvent> undone;
 
-        private History(Node<IEvent> done, Node<IEvent> undone)
+        private History(Timeline<IEvent> done, Timeline<IEvent> undone)
         {
             this.done = done;
             this.undone = undone;
@@ -76,8 +76,8 @@ namespace ImmutableUndoRedo
         public static History Create()
         {
             return new History(
-                Node<IEvent>.None(),
-                Node<IEvent>.None());
+                Timeline<IEvent>.Empty(),
+                Timeline<IEvent>.Empty());
         }
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace ImmutableUndoRedo
         public static History Create(IEnumerable<IEvent> done, IEnumerable<IEvent> undone)
         {
             return new History(
-                Node<IEvent>.Create(done),
-                Node<IEvent>.Create(undone));
+                Timeline<IEvent>.Create(done),
+                Timeline<IEvent>.Create(undone));
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace ImmutableUndoRedo
         public History ClearDone()
         {
             return new History(
-                Node<IEvent>.None(),
+                Timeline<IEvent>.Empty(),
                 this.undone);
         }
 
@@ -175,7 +175,7 @@ namespace ImmutableUndoRedo
         {
             return new History(
                 this.done,
-                Node<IEvent>.None());
+                Timeline<IEvent>.Empty());
         }
 
         /// <summary>
@@ -218,8 +218,8 @@ namespace ImmutableUndoRedo
         public History Do(IEvent @event)
         {
             return new History(
-                Node<IEvent>.Create(@event.Do(), this.done),
-                Node<IEvent>.None());
+                Timeline<IEvent>.Create(@event.Do(), this.done),
+                Timeline<IEvent>.Empty());
         }
 
         /// <summary>

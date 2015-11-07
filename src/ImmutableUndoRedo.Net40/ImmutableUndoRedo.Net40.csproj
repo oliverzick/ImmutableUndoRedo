@@ -51,11 +51,11 @@
     <Compile Include="..\ImmutableUndoRedo\IEvent.cs">
       <Link>IEvent.cs</Link>
     </Compile>
-    <Compile Include="..\ImmutableUndoRedo\Node.cs">
-      <Link>Node.cs</Link>
-    </Compile>
     <Compile Include="..\ImmutableUndoRedo\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\ImmutableUndoRedo\Timeline.cs">
+      <Link>Timeline.cs</Link>
     </Compile>
     <Compile Include="..\ImmutableUndoRedo\ValueSemantics.cs">
       <Link>ValueSemantics.cs</Link>
