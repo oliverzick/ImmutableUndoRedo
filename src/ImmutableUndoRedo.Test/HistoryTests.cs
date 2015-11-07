@@ -93,7 +93,7 @@ namespace ImmutableUndoRedo
 
             target.CopyDoneTo(actual);
 
-            CollectionAssert.AreEquivalent(expected, actual);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -107,7 +107,7 @@ namespace ImmutableUndoRedo
 
             target.CopyUndoneTo(actual);
 
-            CollectionAssert.AreEquivalent(expected, actual);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
