@@ -54,9 +54,9 @@
 {
     private readonly int id;
 
-    private readonly int totalDo;
+    private readonly int doCalls;
 
-    private readonly int totalUndo;
+    private readonly int undoCalls;
 
     public Event(int id)
         : this()
@@ -64,25 +64,30 @@
         this.id = id;
     }
 
-    private Event(int id, int totalDo, int totalUndo)
+    private Event(int id, int doCalls, int undoCalls)
         : this(id)
     {
-        this.totalDo = totalDo;
-        this.totalUndo = totalUndo;
+        this.doCalls = doCalls;
+        this.undoCalls = undoCalls;
     }
 
     public IEvent Do()
     {
-        Console.WriteLine("Do   event #{0} (total 'Do': {1} | total 'Undo': {2})", this.id, this.totalDo + 1, this.totalUndo);
+        Console.WriteLine("Do event #{0}", this.id);
 
-        return new Event(this.id, this.totalDo + 1, this.totalUndo);
+        return new Event(this.id, this.doCalls + 1, this.undoCalls);
     }
 
     public IEvent Undo()
     {
-        Console.WriteLine("Undo event #{0} (total 'Do': {1} | total 'Undo': {2})", this.id, this.totalDo, this.totalUndo + 1);
+        Console.WriteLine("Undo event #{0}", this.id);
 
-        return new Event(this.id, this.totalDo, this.totalUndo + 1);
+        return new Event(this.id, this.doCalls, this.undoCalls + 1);
+    }
+
+    public override string ToString()
+    {
+        return $"Event {{Id = {this.id}, #Do calls = {this.doCalls}, #Undo calls = {this.undoCalls}}}";
     }
 }
 </code></pre>
@@ -90,86 +95,56 @@
 <h2>
 <a id="use-of-the-history-class" class="anchor" href="#use-of-the-history-class" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use of the History class</h2>
 
-<pre><code>static void Main(string[] args)
+<pre><code>class Program
 {
-    // Create history instance without any done or undone events
-    var history = History.CreateEmpty();
+    static void Main(string[] args)
+    {
+        var history = History.Create()
+                             .Do(new Event(1))
+                             .Do(new Event(2))
+                             .Do(new Event(3))
+                             .Do(new Event(4))
+                             .Do(new Event(5))
+                             .Undo()
+                             .Undo()
+                             .Undo()
+                             .Redo();
 
-    // Current history:
-    // Done:    (none)
-    // Undone:  (none)
+        Console.WriteLine("\n\nDone events:");
+        List&lt;IEvent&gt; doneEvents = new List&lt;IEvent&gt;();
+        history.CopyDoneTo(doneEvents);
+        doneEvents.ForEach(Console.WriteLine);
 
-    // Perform 'Do' operation of event #1 and
-    // use resulting event as next event to undo.
-    // Empty undone events.
-    history = history.Do(new Event(1));
+        Console.WriteLine("\n\nUndone events:");
+        List&lt;IEvent&gt; undoneEvents = new List&lt;IEvent&gt;();
+        history.CopyUndoneTo(undoneEvents);
+        undoneEvents.ForEach(Console.WriteLine);
 
-    // Current history:
-    // Done:    #1
-    // Undone:  (none)
-
-    // Perform 'Do' operation of event #2 and
-    // use resulting event as next event to undo.
-    // Empty undone events.
-    history = history.Do(new Event(2));
-
-    // Current history:
-    // Done:    #2 -&gt; #1
-    // Undone:  (none)
-
-    // Perform 'Do' operation of event #3 and
-    // use resulting event as next event to undo.
-    // Empty undone events.
-    history = history.Do(new Event(3));
-
-    // Current history:
-    // Done:    #3 -&gt; #2 -&gt; #1
-    // Undone:  (none)
-
-    // Perform 'Undo' operation of event #3 and
-    // use resulting event as next event to redo.
-    history = history.Undo();
-
-    // Current history:
-    // Done:    #2 -&gt; #1
-    // Undone:  #3
-
-    // Perform 'Undo' operation of event #2 and
-    // use resulting event as next event to redo.
-    history = history.Undo();
-
-    // Current history:
-    // Done:    #1
-    // Undone:  #2 -&gt; #3
-
-    // Perform 'Do' operation of event #2 and
-    // use resulting event as next event to undo.
-    history = history.Redo();
-
-    // Current history:
-    // Done:    #2 -&gt; #1
-    // Undone:  #3
-
-    // Perform 'Do' operation of event #4 and 
-    // use resulting event as next event to undo.
-    // Empties undone events.
-    history = history.Do(new Event(4));
-
-    // Current history:
-    // Done:    #4 -&gt; #2 -&gt; #1
-    // Undone:  (none)
-
-    Console.ReadLine();
+        Console.ReadLine();
+    }
 }
 
 // Console output:
-Do   event #1 (total 'Do': 1 | total 'Undo': 0)
-Do   event #2 (total 'Do': 1 | total 'Undo': 0)
-Do   event #3 (total 'Do': 1 | total 'Undo': 0)
-Undo event #3 (total 'Do': 1 | total 'Undo': 1)
-Undo event #2 (total 'Do': 1 | total 'Undo': 1)
-Do   event #2 (total 'Do': 2 | total 'Undo': 1)
-Do   event #4 (total 'Do': 1 | total 'Undo': 0)
+Do event #1
+Do event #2
+Do event #3
+Do event #4
+Do event #5
+Undo event #5
+Undo event #4
+Undo event #3
+Do event #3
+
+
+Done events:
+Event {Id = 1, #Do calls = 1, #Undo calls = 0}
+Event {Id = 2, #Do calls = 1, #Undo calls = 0}
+Event {Id = 3, #Do calls = 2, #Undo calls = 1}
+
+
+Undone events:
+Event {Id = 5, #Do calls = 1, #Undo calls = 1}
+Event {Id = 4, #Do calls = 1, #Undo calls = 1}
 </code></pre>
       </section>
     </div>
