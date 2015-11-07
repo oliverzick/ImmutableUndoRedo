@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>ImmutableUndoRedo</id>
-        <version>1.1.1</version>
+        <version>1.2.0</version>
         <title>ImmutableUndoRedo</title>
         <authors>Oliver Zick</authors>
         <licenseUrl>https://raw.githubusercontent.com/oliverzick/ImmutableUndoRedo/master/LICENSE</licenseUrl>
@@ -17,11 +17,11 @@
         <tags>do undo redo history immutable immutability</tags>
     </metadata>
     <files>
-        <file src="bin\Release\net40\*.dll" target="lib\net40\" />
-        <file src="bin\Release\net40\*.xml" target="lib\net40\" />
-        <file src="bin\Release\net45\*.dll" target="lib\net45\" />
-        <file src="bin\Release\net45\*.xml" target="lib\net45\" />
-        <file src="bin\Release\net451\*.dll" target="lib\net451\" />
-        <file src="bin\Release\net451\*.xml" target="lib\net451\" />
+        <file src="bin\Release\net40\ImmutableUndoRedo.dll" target="lib\net40\ImmutableUndoRedo.dll" />
+        <file src="bin\Release\net40\ImmutableUndoRedo.xml" target="lib\net40\ImmutableUndoRedo.xml" />
+        <file src="bin\Release\net45\ImmutableUndoRedo.dll" target="lib\net45\ImmutableUndoRedo.dll" />
+        <file src="bin\Release\net45\ImmutableUndoRedo.xml" target="lib\net45\ImmutableUndoRedo.xml" />
+        <file src="bin\Release\net451\ImmutableUndoRedo.dll" target="lib\net451\ImmutableUndoRedo.dll" />
+        <file src="bin\Release\net451\ImmutableUndoRedo.xml" target="lib\net451\ImmutableUndoRedo.xml" />
     </files>
 </package>
