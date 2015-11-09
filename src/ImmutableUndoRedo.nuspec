@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>ImmutableUndoRedo</id>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
         <title>ImmutableUndoRedo</title>
         <authors>Oliver Zick</authors>
         <licenseUrl>https://raw.githubusercontent.com/oliverzick/ImmutableUndoRedo/master/LICENSE</licenseUrl>
@@ -23,5 +23,7 @@
         <file src="bin\Release\net45\ImmutableUndoRedo.xml" target="lib\net45\ImmutableUndoRedo.xml" />
         <file src="bin\Release\net451\ImmutableUndoRedo.dll" target="lib\net451\ImmutableUndoRedo.dll" />
         <file src="bin\Release\net451\ImmutableUndoRedo.xml" target="lib\net451\ImmutableUndoRedo.xml" />
+        <file src="bin\Release\net46\ImmutableUndoRedo.dll" target="lib\net46\ImmutableUndoRedo.dll" />
+        <file src="bin\Release\net46\ImmutableUndoRedo.xml" target="lib\net46\ImmutableUndoRedo.xml" />
     </files>
 </package>
