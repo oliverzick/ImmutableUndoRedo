@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableUndoRedo.Net451", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableUndoRedo.Test.Net451", "ImmutableUndoRedo.Test.Net451\ImmutableUndoRedo.Test.Net451.csproj", "{68B827FB-0D18-4255-B568-69E791F4FDBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableUndoRedo.Net452", "ImmutableUndoRedo.Net452\ImmutableUndoRedo.Net452.csproj", "{367E88E1-844D-4431-A901-2B05847F7BE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableUndoRedo.Test.Net452", "ImmutableUndoRedo.Test.Net452\ImmutableUndoRedo.Test.Net452.csproj", "{B08CE354-5C59-4B54-8F73-970B6EB63B7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +72,12 @@ Global
 		{68B827FB-0D18-4255-B568-69E791F4FDBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{68B827FB-0D18-4255-B568-69E791F4FDBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68B827FB-0D18-4255-B568-69E791F4FDBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{367E88E1-844D-4431-A901-2B05847F7BE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{367E88E1-844D-4431-A901-2B05847F7BE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{367E88E1-844D-4431-A901-2B05847F7BE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B08CE354-5C59-4B54-8F73-970B6EB63B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B08CE354-5C59-4B54-8F73-970B6EB63B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B08CE354-5C59-4B54-8F73-970B6EB63B7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,5 +92,7 @@ Global
 		{084C5221-1F0B-4AD3-B488-4031A408B714} = {1D1B0A5B-14ED-4F91-92F5-8B556CB68F75}
 		{1906EE20-1A95-4F10-B6AF-7E82C26235B8} = {A2D1E7D5-0255-4FEC-BA21-D8446DA1BEB6}
 		{68B827FB-0D18-4255-B568-69E791F4FDBC} = {1D1B0A5B-14ED-4F91-92F5-8B556CB68F75}
+		{367E88E1-844D-4431-A901-2B05847F7BE9} = {A2D1E7D5-0255-4FEC-BA21-D8446DA1BEB6}
+		{B08CE354-5C59-4B54-8F73-970B6EB63B7A} = {1D1B0A5B-14ED-4F91-92F5-8B556CB68F75}
 	EndGlobalSection
 EndGlobal
