@@ -40,18 +40,6 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void CreateEmpty__Should_Return_New_Instance_With_Neither_Done_Nor_Undone_Activities()
-        {
-            var expectedDone = Enumerable.Empty<IActivity>();
-            var expectedUndone = Enumerable.Empty<IActivity>();
-            var expected = History.Create(expectedDone, expectedUndone);
-
-            var actual = History.CreateEmpty();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
         public void ClearDone__With_Given_Done_And_Undone_Activities__Should_Return_New_Instance_With_No_Done_And_Given_Undone_Activities()
         {
             var done = new IActivity[] { new ActivityStub(1) };

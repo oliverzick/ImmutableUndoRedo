@@ -7,6 +7,7 @@ Change history:
 
 Version 2.0.0:
 
+	- Issue #11: Remove obsolete History.CreateEmpty method
 	- Issue #13: Rename IEvent interface to IActivity
 
 Version 1.2.1:

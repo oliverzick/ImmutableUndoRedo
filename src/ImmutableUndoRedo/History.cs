@@ -102,18 +102,6 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
-        /// Creates a <see cref="History"/> that contains neither done nor undone activities.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="History"/> that contains neither done nor undone activities.
-        /// </returns>
-        [Obsolete("Replace with 'Create' method.", false)]
-        public static History CreateEmpty()
-        {
-            return Create();
-        }
-
-        /// <summary>
         /// Determines whether this instance and a specified object, which must also be a <see cref="History"/>, have the same value.
         /// </summary>
         /// <param name="obj">The <see cref="object" /> to compare to this instance.</param>
