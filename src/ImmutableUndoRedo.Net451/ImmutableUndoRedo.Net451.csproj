@@ -44,11 +44,11 @@
     <Compile Include="..\ImmutableUndoRedo\History.cs">
       <Link>History.cs</Link>
     </Compile>
+    <Compile Include="..\ImmutableUndoRedo\IActivity.cs">
+      <Link>IActivity.cs</Link>
+    </Compile>
     <Compile Include="..\ImmutableUndoRedo\IContentEquatable.cs">
       <Link>IContentEquatable.cs</Link>
-    </Compile>
-    <Compile Include="..\ImmutableUndoRedo\IEvent.cs">
-      <Link>IEvent.cs</Link>
     </Compile>
     <Compile Include="..\ImmutableUndoRedo\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

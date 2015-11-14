@@ -5,6 +5,10 @@ Copyright (c) 2015 Oliver Zick. All rights reserved.
 
 Change history:
 
+Version 2.0.0:
+
+	- Issue #13: Rename IEvent interface to IActivity
+
 Version 1.2.1:
 
 	- Issue #7: Enable NuGet package to support .NET Framework version 4.6

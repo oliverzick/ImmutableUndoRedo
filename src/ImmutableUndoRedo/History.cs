@@ -24,18 +24,18 @@ namespace ImmutableUndoRedo
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a history of events that supports doing, undoing and redoing of events.
+    /// Represents a history of activities that supports doing, undoing and redoing of activities.
     /// </summary>
     /// <remarks>
     /// This class is implemented as immutable object with value semantics.
     /// </remarks>
     public sealed class History : IEquatable<History>, IContentEquatable<History>
     {
-        private readonly Timeline<IEvent> done;
+        private readonly Timeline<IActivity> done;
 
-        private readonly Timeline<IEvent> undone;
+        private readonly Timeline<IActivity> undone;
 
-        private History(Timeline<IEvent> done, Timeline<IEvent> undone)
+        private History(Timeline<IActivity> done, Timeline<IActivity> undone)
         {
             this.done = done;
             this.undone = undone;
@@ -68,44 +68,44 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
-        /// Creates a <see cref="History"/> that contains neither done nor undone events.
+        /// Creates a <see cref="History"/> that contains neither done nor undone activities.
         /// </summary>
         /// <returns>
-        /// A <see cref="History"/> that contains neither done nor undone events.
+        /// A <see cref="History"/> that contains neither done nor undone activities.
         /// </returns>
         public static History Create()
         {
             return new History(
-                Timeline<IEvent>.Empty(),
-                Timeline<IEvent>.Empty());
+                Timeline<IActivity>.Empty(),
+                Timeline<IActivity>.Empty());
         }
 
         /// <summary>
         /// Creates a <see cref="History"/> that contains the specified
-        /// <paramref name="done"/> and <paramref name="undone"/> events.
+        /// <paramref name="done"/> and <paramref name="undone"/> activities.
         /// </summary>
         /// <param name="done">
-        /// The done events given in chronological order.
+        /// The done activities given in chronological order.
         /// </param>
         /// <param name="undone">
-        /// The undone events given in chronological order.
+        /// The undone activities given in chronological order.
         /// </param>
         /// <returns>
         /// A <see cref="History"/> that contains the specified
-        /// <paramref name="done"/> and <paramref name="undone"/> events.
+        /// <paramref name="done"/> and <paramref name="undone"/> activities.
         /// </returns>
-        public static History Create(IEnumerable<IEvent> done, IEnumerable<IEvent> undone)
+        public static History Create(IEnumerable<IActivity> done, IEnumerable<IActivity> undone)
         {
             return new History(
-                Timeline<IEvent>.Create(done),
-                Timeline<IEvent>.Create(undone));
+                Timeline<IActivity>.Create(done),
+                Timeline<IActivity>.Create(undone));
         }
 
         /// <summary>
-        /// Creates a <see cref="History"/> that contains neither done nor undone events.
+        /// Creates a <see cref="History"/> that contains neither done nor undone activities.
         /// </summary>
         /// <returns>
-        /// A <see cref="History"/> that contains neither done nor undone events.
+        /// A <see cref="History"/> that contains neither done nor undone activities.
         /// </returns>
         [Obsolete("Replace with 'Create' method.", false)]
         public static History CreateEmpty()
@@ -151,88 +151,88 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
-        /// Returns a new <see cref="History"/> that contains the undone events of this instance
-        /// without any done events.
+        /// Returns a new <see cref="History"/> that contains the undone activities of this instance
+        /// without any done activities.
         /// </summary>
         /// <returns>
-        /// A <see cref="History"/> that is equivalent to this instance except that the done events are cleared.
+        /// A <see cref="History"/> that is equivalent to this instance except that the done activities are cleared.
         /// </returns>
         public History ClearDone()
         {
             return new History(
-                Timeline<IEvent>.Empty(),
+                Timeline<IActivity>.Empty(),
                 this.undone);
         }
 
         /// <summary>
-        /// Returns a new <see cref="History"/> that contains the done events of this instance
-        /// without any undone events.
+        /// Returns a new <see cref="History"/> that contains the done activities of this instance
+        /// without any undone activities.
         /// </summary>
         /// <returns>
-        /// A <see cref="History"/> that is equivalent to this instance except that the undone events are cleared.
+        /// A <see cref="History"/> that is equivalent to this instance except that the undone activities are cleared.
         /// </returns>
         public History ClearUndone()
         {
             return new History(
                 this.done,
-                Timeline<IEvent>.Empty());
+                Timeline<IActivity>.Empty());
         }
 
         /// <summary>
-        /// Copies the done events in chronological order to the specified <paramref name="collection"/>.
+        /// Copies the done activities in chronological order to the specified <paramref name="collection"/>.
         /// </summary>
         /// <param name="collection">
-        /// The collection of events to which the done events are copied.
+        /// The collection of activities to which the done activities are copied.
         /// </param>
-        public void CopyDoneTo(ICollection<IEvent> collection)
+        public void CopyDoneTo(ICollection<IActivity> collection)
         {
             this.done.CopyTo(collection);
         }
 
         /// <summary>
-        /// Copies the undone events in chronological order to the specified <paramref name="collection"/>.
+        /// Copies the undone activities in chronological order to the specified <paramref name="collection"/>.
         /// </summary>
         /// <param name="collection">
-        /// The collection of events to which the undone events are copied.
+        /// The collection of activities to which the undone activities are copied.
         /// </param>
-        public void CopyUndoneTo(ICollection<IEvent> collection)
+        public void CopyUndoneTo(ICollection<IActivity> collection)
         {
             this.undone.CopyTo(collection);
         }
 
         /// <summary>
-        /// Returns a new <see cref="History"/> whose done events
-        /// are extended by the result of doing the specified <paramref name="event"/>,
-        /// without any events to redo.
+        /// Returns a new <see cref="History"/> whose done activities
+        /// are extended by the result of doing the specified <paramref name="activity"/>,
+        /// without any activities to redo.
         /// </summary>
-        /// <param name="event">
-        /// The event to perform the <see cref="IEvent.Do"/> method whose result
-        /// is the next event to undo.
+        /// <param name="activity">
+        /// The activity to perform the <see cref="IActivity.Do"/> method whose result
+        /// is the next activity to undo.
         /// </param>
         /// <returns>
-        /// A new <see cref="History"/> whose done events
-        /// are extended by the result of performing the <see cref="IEvent.Do"/>
-        /// method of the specified <paramref name="event"/>,
-        /// without any events to redo.
+        /// A new <see cref="History"/> whose done activities
+        /// are extended by the result of performing the <see cref="IActivity.Do"/>
+        /// method of the specified <paramref name="activity"/>,
+        /// without any activities to redo.
         /// </returns>
-        public History Do(IEvent @event)
+        public History Do(IActivity activity)
         {
             return new History(
-                Timeline<IEvent>.Create(@event.Do(), this.done),
-                Timeline<IEvent>.Empty());
+                Timeline<IActivity>.Create(activity.Do(), this.done),
+                Timeline<IActivity>.Empty());
         }
 
         /// <summary>
-        /// Returns a new <see cref="History"/> whose undone events
-        /// are extended by the result of undoing the recently done event,
-        /// having the done events truncated by the recently done event.
+        /// Returns a new <see cref="History"/> whose undone activities
+        /// are extended by the result of undoing the recently done activity,
+        /// having the done activities truncated by the recently done activity.
         /// </summary>
         /// <returns>
-        /// Returns a new <see cref="History"/> whose undone events
-        /// are extended by the result of performing the <see cref="IEvent.Undo"/>
-        /// method of the recently done event,
-        /// having the done events truncated by the recently done event.
-        /// If this instance does not contain any done events,
+        /// Returns a new <see cref="History"/> whose undone activities
+        /// are extended by the result of performing the <see cref="IActivity.Undo"/>
+        /// method of the recently done activity,
+        /// having the done activities truncated by the recently done activity.
+        /// If this instance does not contain any done activities,
         /// the method returns a new <see cref="History"/> that is identical to this instance.
         /// </returns>
         public History Undo()
@@ -243,16 +243,16 @@ namespace ImmutableUndoRedo
         }
 
         /// <summary>
-        /// Returns a new <see cref="History"/> whose done events
-        /// are extended by the result of doing the recently undone event,
-        /// having the undone events truncated by the recently undone event.
+        /// Returns a new <see cref="History"/> whose done activities
+        /// are extended by the result of doing the recently undone activity,
+        /// having the undone activities truncated by the recently undone activity.
         /// </summary>
         /// <returns>
-        /// Returns a new <see cref="History"/> whose done events
-        /// are extended by the result of performing the <see cref="IEvent.Do"/>
-        /// method of the recently undone event,
-        /// having the undone events truncated by the recently undone event.
-        /// If this instance does not contain any undone events,
+        /// Returns a new <see cref="History"/> whose done activities
+        /// are extended by the result of performing the <see cref="IActivity.Do"/>
+        /// method of the recently undone activity,
+        /// having the undone activities truncated by the recently undone activity.
+        /// If this instance does not contain any undone activities,
         /// the method returns a new <see cref="History"/> that is identical to this instance.
         /// </returns>
         public History Redo()

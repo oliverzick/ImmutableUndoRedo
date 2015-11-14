@@ -27,36 +27,36 @@ namespace ImmutableUndoRedo
     public class HistoryIntegrationTests
     {
         [TestMethod]
-        public void Do__With_Event__Should_Return_New_Instance_Whose_History_Of_Done_Events_Is_Extended_By_The_Result_Of_Doing_The_Specified_Event_Without_Any_Events_To_Redo()
+        public void Do__With_Activity__Should_Return_New_Instance_Whose_History_Of_Done_Activities_Is_Extended_By_The_Result_Of_Doing_The_Specified_Activity_Without_Any_Activities_To_Redo()
         {
-            var done = new IEvent[]
+            var done = new IActivity[]
                        {
-                           new EventStub(10, 0, 0),
-                           new EventStub(11, 0, 0),
+                           new ActivityStub(10, 0, 0),
+                           new ActivityStub(11, 0, 0),
                        };
 
-            var undone = new IEvent[]
+            var undone = new IActivity[]
                          {
-                             new EventStub(20, 0, 0),
-                             new EventStub(21, 0, 0),
+                             new ActivityStub(20, 0, 0),
+                             new ActivityStub(21, 0, 0),
                          };
 
             var target = History.Create(done, undone);
 
-            var expectedDone = new IEvent[]
+            var expectedDone = new IActivity[]
                                {
-                                   new EventStub(10, 0, 0),
-                                   new EventStub(11, 0, 0),
-                                   new EventStub(12, 1, 0),
+                                   new ActivityStub(10, 0, 0),
+                                   new ActivityStub(11, 0, 0),
+                                   new ActivityStub(12, 1, 0),
                                };
 
-            var expectedUndone = Enumerable.Empty<IEvent>();
+            var expectedUndone = Enumerable.Empty<IActivity>();
 
             var expected = History.Create(expectedDone, expectedUndone);
 
-            var @event = new EventStub(12, 0, 0);
+            var activity = new ActivityStub(12, 0, 0);
 
-            var actual = target.Do(@event);
+            var actual = target.Do(activity);
 
             Assert.AreEqual(expected, actual);
         }
@@ -74,32 +74,32 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void Undo__With_Given_Done_And_Undone_Events__Should_Return_New_Instance_Whose_History_Of_Undone_Events_Is_Extended_By_The_Result_Of_Undoing_The_Recently_Done_Event_Having_The_History_Of_Done_Events_Truncated_By_The_Recently_Done_Event()
+        public void Undo__With_Given_Done_And_Undone_Activities__Should_Return_New_Instance_Whose_History_Of_Undone_Activities_Is_Extended_By_The_Result_Of_Undoing_The_Recently_Done_Activity_Having_The_History_Of_Done_Activities_Truncated_By_The_Recently_Done_Activity()
         {
-            var done = new IEvent[]
+            var done = new IActivity[]
                        {
-                           new EventStub(10, 0, 0),
-                           new EventStub(11, 0, 0),
+                           new ActivityStub(10, 0, 0),
+                           new ActivityStub(11, 0, 0),
                        };
 
-            var undone = new IEvent[]
+            var undone = new IActivity[]
                          {
-                             new EventStub(20, 0, 0),
-                             new EventStub(21, 0, 0),
+                             new ActivityStub(20, 0, 0),
+                             new ActivityStub(21, 0, 0),
                          };
 
             var target = History.Create(done, undone);
 
-            var expectedDone = new IEvent[]
+            var expectedDone = new IActivity[]
                                {
-                                   new EventStub(10, 0, 0),
+                                   new ActivityStub(10, 0, 0),
                                };
 
-            var expectedUndone = new IEvent[]
+            var expectedUndone = new IActivity[]
                                  {
-                                     new EventStub(20, 0, 0),
-                                     new EventStub(21, 0, 0),
-                                     new EventStub(11, 0, 1),
+                                     new ActivityStub(20, 0, 0),
+                                     new ActivityStub(21, 0, 0),
+                                     new ActivityStub(11, 0, 1),
                                  };
 
             var expected = History.Create(expectedDone, expectedUndone);
@@ -110,14 +110,14 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void Undo__Without_Any_Done_Events__Should_Return_Identical_Instance()
+        public void Undo__Without_Any_Done_Activities__Should_Return_Identical_Instance()
         {
-            var done = new IEvent[] { };
+            var done = new IActivity[] { };
 
-            var undone = new IEvent[]
+            var undone = new IActivity[]
                          {
-                             new EventStub(20, 0, 0),
-                             new EventStub(21, 0, 0),
+                             new ActivityStub(20, 0, 0),
+                             new ActivityStub(21, 0, 0),
                          };
 
             var target = History.Create(done, undone);
@@ -142,32 +142,32 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void Redo__With_Given_Done_And_Undone_Events__Should_Return_New_Instance_Whose_History_Of_Done_Events_Is_Extended_By_The_Result_Of_Doing_The_Recently_Undone_Event_Having_The_History_Of_Undone_Events_Truncated_By_The_Recently_Undone_Event()
+        public void Redo__With_Given_Done_And_Undone_Activities__Should_Return_New_Instance_Whose_History_Of_Done_Activities_Is_Extended_By_The_Result_Of_Doing_The_Recently_Undone_Activity_Having_The_History_Of_Undone_Activities_Truncated_By_The_Recently_Undone_Activity()
         {
-            var done = new IEvent[]
+            var done = new IActivity[]
                        {
-                           new EventStub(10, 0, 0),
-                           new EventStub(11, 0, 0),
+                           new ActivityStub(10, 0, 0),
+                           new ActivityStub(11, 0, 0),
                        };
 
-            var undone = new IEvent[]
+            var undone = new IActivity[]
                          {
-                             new EventStub(20, 0, 0),
-                             new EventStub(21, 0, 0),
+                             new ActivityStub(20, 0, 0),
+                             new ActivityStub(21, 0, 0),
                          };
 
             var target = History.Create(done, undone);
 
-            var expectedDone = new IEvent[]
+            var expectedDone = new IActivity[]
                                {
-                                   new EventStub(10, 0, 0),
-                                   new EventStub(11, 0, 0),
-                                   new EventStub(21, 1, 0),
+                                   new ActivityStub(10, 0, 0),
+                                   new ActivityStub(11, 0, 0),
+                                   new ActivityStub(21, 1, 0),
                                };
 
-            var expectedUndone = new IEvent[]
+            var expectedUndone = new IActivity[]
                                  {
-                                     new EventStub(20, 0, 0),
+                                     new ActivityStub(20, 0, 0),
                                  };
 
             var expected = History.Create(expectedDone, expectedUndone);
@@ -178,15 +178,15 @@ namespace ImmutableUndoRedo
         }
 
         [TestMethod]
-        public void Redo__Without_Any_Undone_Events__Should_Return_Identical_Instance()
+        public void Redo__Without_Any_Undone_Activities__Should_Return_Identical_Instance()
         {
-            var done = new IEvent[]
+            var done = new IActivity[]
                        {
-                           new EventStub(10, 0, 0),
-                           new EventStub(11, 0, 0),
+                           new ActivityStub(10, 0, 0),
+                           new ActivityStub(11, 0, 0),
                        };
 
-            var undone = new IEvent[] { };
+            var undone = new IActivity[] { };
 
             var target = History.Create(done, undone);
 

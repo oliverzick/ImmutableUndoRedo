@@ -1,5 +1,5 @@
 ﻿#region Copyright and license
-// <copyright file="EventStub.cs" company="Oliver Zick">
+// <copyright file="ActivityStub.cs" company="Oliver Zick">
 //     Copyright (c) 2015 Oliver Zick. All rights reserved.
 // </copyright>
 // <author>Oliver Zick</author>
@@ -20,7 +20,7 @@
 
 namespace ImmutableUndoRedo
 {
-    internal struct EventStub : IEvent
+    internal struct ActivityStub : IActivity
     {
         private readonly int id;
 
@@ -28,27 +28,27 @@ namespace ImmutableUndoRedo
 
         private readonly int undoCalls;
 
-        public EventStub(int id)
+        public ActivityStub(int id)
             : this()
         {
             this.id = id;
         }
 
-        public EventStub(int id, int doCalls, int undoCalls)
+        public ActivityStub(int id, int doCalls, int undoCalls)
             : this(id)
         {
             this.doCalls = doCalls;
             this.undoCalls = undoCalls;
         }
 
-        public IEvent Do()
+        public IActivity Do()
         {
-            return new EventStub(this.id, this.doCalls + 1, this.undoCalls);
+            return new ActivityStub(this.id, this.doCalls + 1, this.undoCalls);
         }
 
-        public IEvent Undo()
+        public IActivity Undo()
         {
-            return new EventStub(this.id, this.doCalls, this.undoCalls + 1);
+            return new ActivityStub(this.id, this.doCalls, this.undoCalls + 1);
         }
     }
 }

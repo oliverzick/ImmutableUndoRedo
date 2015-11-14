@@ -28,25 +28,25 @@ namespace ImmutableUndoRedo
         static void Main(string[] args)
         {
             var history = History.Create()
-                                 .Do(new Event(1))
-                                 .Do(new Event(2))
-                                 .Do(new Event(3))
-                                 .Do(new Event(4))
-                                 .Do(new Event(5))
+                                 .Do(new Activity(1))
+                                 .Do(new Activity(2))
+                                 .Do(new Activity(3))
+                                 .Do(new Activity(4))
+                                 .Do(new Activity(5))
                                  .Undo()
                                  .Undo()
                                  .Undo()
                                  .Redo();
 
-            Console.WriteLine("\n\nDone events:");
-            List<IEvent> doneEvents = new List<IEvent>();
-            history.CopyDoneTo(doneEvents);
-            doneEvents.ForEach(Console.WriteLine);
+            Console.WriteLine("\n\nDone activities:");
+            List<IActivity> done = new List<IActivity>();
+            history.CopyDoneTo(done);
+            done.ForEach(Console.WriteLine);
 
-            Console.WriteLine("\n\nUndone events:");
-            List<IEvent> undoneEvents = new List<IEvent>();
-            history.CopyUndoneTo(undoneEvents);
-            undoneEvents.ForEach(Console.WriteLine);
+            Console.WriteLine("\n\nUndone activities:");
+            List<IActivity> undone = new List<IActivity>();
+            history.CopyUndoneTo(undone);
+            undone.ForEach(Console.WriteLine);
 
             Console.ReadLine();
         }

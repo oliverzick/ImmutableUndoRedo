@@ -53,8 +53,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="EventDummy.cs" />
-    <Compile Include="EventStub.cs" />
+    <Compile Include="ActivityDummy.cs" />
+    <Compile Include="ActivityStub.cs" />
     <Compile Include="HistoryIntegrationTests.cs" />
     <Compile Include="HistoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

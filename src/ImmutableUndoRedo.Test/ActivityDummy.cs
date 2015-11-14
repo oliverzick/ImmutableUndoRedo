@@ -1,5 +1,5 @@
 ﻿#region Copyright and license
-// <copyright file="EventDummy.cs" company="Oliver Zick">
+// <copyright file="ActivityDummy.cs" company="Oliver Zick">
 //     Copyright (c) 2015 Oliver Zick. All rights reserved.
 // </copyright>
 // <author>Oliver Zick</author>
@@ -22,14 +22,14 @@ namespace ImmutableUndoRedo
 {
     using System;
 
-    internal struct EventDummy : IEvent
+    internal struct ActivityDummy : IActivity
     {
-        public IEvent Do()
+        public IActivity Do()
         {
             throw new InvalidOperationException();
         }
 
-        public IEvent Undo()
+        public IActivity Undo()
         {
             throw new InvalidOperationException();
         }

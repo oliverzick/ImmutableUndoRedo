@@ -44,11 +44,11 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="..\ImmutableUndoRedo.Test\EventDummy.cs">
-      <Link>EventDummy.cs</Link>
+    <Compile Include="..\ImmutableUndoRedo.Test\ActivityDummy.cs">
+      <Link>ActivityDummy.cs</Link>
     </Compile>
-    <Compile Include="..\ImmutableUndoRedo.Test\EventStub.cs">
-      <Link>EventStub.cs</Link>
+    <Compile Include="..\ImmutableUndoRedo.Test\ActivityStub.cs">
+      <Link>ActivityStub.cs</Link>
     </Compile>
     <Compile Include="..\ImmutableUndoRedo.Test\HistoryIntegrationTests.cs">
       <Link>HistoryIntegrationTests.cs</Link>

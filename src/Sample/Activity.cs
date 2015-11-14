@@ -1,5 +1,5 @@
 #region Copyright and license
-// <copyright file="Event.cs" company="Oliver Zick">
+// <copyright file="Activity.cs" company="Oliver Zick">
 //     Copyright (c) 2015 Oliver Zick. All rights reserved.
 // </copyright>
 // <author>Oliver Zick</author>
@@ -22,7 +22,7 @@ namespace ImmutableUndoRedo
 {
     using System;
 
-    struct Event : IEvent
+    internal struct Activity : IActivity
     {
         private readonly int id;
 
@@ -30,36 +30,36 @@ namespace ImmutableUndoRedo
 
         private readonly int undoCalls;
 
-        public Event(int id)
+        public Activity(int id)
             : this()
         {
             this.id = id;
         }
 
-        private Event(int id, int doCalls, int undoCalls)
+        private Activity(int id, int doCalls, int undoCalls)
             : this(id)
         {
             this.doCalls = doCalls;
             this.undoCalls = undoCalls;
         }
 
-        public IEvent Do()
+        public IActivity Do()
         {
-            Console.WriteLine("Do event #{0}", this.id);
+            Console.WriteLine("Do activity #{0}", this.id);
 
-            return new Event(this.id, this.doCalls + 1, this.undoCalls);
+            return new Activity(this.id, this.doCalls + 1, this.undoCalls);
         }
 
-        public IEvent Undo()
+        public IActivity Undo()
         {
-            Console.WriteLine("Undo event #{0}", this.id);
+            Console.WriteLine("Undo activity #{0}", this.id);
 
-            return new Event(this.id, this.doCalls, this.undoCalls + 1);
+            return new Activity(this.id, this.doCalls, this.undoCalls + 1);
         }
 
         public override string ToString()
         {
-            return $"Event {{Id = {this.id}, #Do calls = {this.doCalls}, #Undo calls = {this.undoCalls}}}";
+            return $"Activity {{Id = {this.id}, #Do calls = {this.doCalls}, #Undo calls = {this.undoCalls}}}";
         }
     }
 }

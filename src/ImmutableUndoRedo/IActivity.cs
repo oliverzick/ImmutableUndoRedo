@@ -1,5 +1,5 @@
 ﻿#region Copyright and license
-// <copyright file="IEvent.cs" company="Oliver Zick">
+// <copyright file="IActivity.cs" company="Oliver Zick">
 //     Copyright (c) 2015 Oliver Zick. All rights reserved.
 // </copyright>
 // <author>Oliver Zick</author>
@@ -21,27 +21,27 @@
 namespace ImmutableUndoRedo
 {
     /// <summary>
-    /// Represents an event in the <see cref="History"/> that supports 'Do' and 'Undo' operations.
+    /// Represents an activity that supports 'Do' and 'Undo' operations.
     /// </summary>
     /// <remarks>
     /// This interface is intended to be implemented as immutable object with value semantics.
     /// </remarks>
-    public interface IEvent
+    public interface IActivity
     {
         /// <summary>
-        /// Returns a new event after performing the 'Do' operation of this event.
+        /// Returns a new activity that represents the result of doing the current activity.
         /// </summary>
         /// <returns>
-        /// A new event that represents the event after performing the 'Do' operation.
+        /// A new activity that represents the result of doing the current activity.
         /// </returns>
-        IEvent Do();
+        IActivity Do();
 
         /// <summary>
-        /// Returns a new event after performing the 'Undo' operation of this event.
+        /// Returns a new activity that represents the result of undoing the current activity.
         /// </summary>
         /// <returns>
-        /// A new event that represents the event after performing the 'Undo' operation.
+        /// A new activity that represents the result of undoing the current activity.
         /// </returns>
-        IEvent Undo();
+        IActivity Undo();
     }
 }
