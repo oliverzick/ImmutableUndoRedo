@@ -23,6 +23,7 @@ Version 1.2.0:
 	- Issue #4: Drop support for .NET Framework version 3.5
 	- Issue #5: Remove .NET Framework 3.5 files from NuGet package
 	- Issue #6: Improve change history by adding issue numbers
+	- Issue #10: Unit tests for CopyXXXTo methods of History now assert for correct order
 
 Version 1.1.1:
 
