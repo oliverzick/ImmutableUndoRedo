@@ -20,7 +20,7 @@
 
 namespace ImmutableUndoRedo
 {
-    internal struct ActivityStub : IActivity
+    internal struct ActivityStub : IActivity<ActivityStub>
     {
         private readonly int id;
 
@@ -41,12 +41,12 @@ namespace ImmutableUndoRedo
             this.undoCalls = undoCalls;
         }
 
-        public IActivity Do()
+        public ActivityStub Do()
         {
             return new ActivityStub(this.id, this.doCalls + 1, this.undoCalls);
         }
 
-        public IActivity Undo()
+        public ActivityStub Undo()
         {
             return new ActivityStub(this.id, this.doCalls, this.undoCalls + 1);
         }

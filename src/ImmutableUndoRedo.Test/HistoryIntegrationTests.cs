@@ -29,30 +29,30 @@ namespace ImmutableUndoRedo
         [TestMethod]
         public void Do__With_Activity__Should_Return_New_Instance_Whose_History_Of_Done_Activities_Is_Extended_By_The_Result_Of_Doing_The_Specified_Activity_Without_Any_Activities_To_Redo()
         {
-            var done = new IActivity[]
+            var done = new[]
                        {
                            new ActivityStub(10, 0, 0),
                            new ActivityStub(11, 0, 0),
                        };
 
-            var undone = new IActivity[]
+            var undone = new[]
                          {
                              new ActivityStub(20, 0, 0),
                              new ActivityStub(21, 0, 0),
                          };
 
-            var target = History.Create(done, undone);
+            var target = History<ActivityStub>.Create(done, undone);
 
-            var expectedDone = new IActivity[]
+            var expectedDone = new[]
                                {
                                    new ActivityStub(10, 0, 0),
                                    new ActivityStub(11, 0, 0),
                                    new ActivityStub(12, 1, 0),
                                };
 
-            var expectedUndone = Enumerable.Empty<IActivity>();
+            var expectedUndone = Enumerable.Empty<ActivityStub>();
 
-            var expected = History.Create(expectedDone, expectedUndone);
+            var expected = History<ActivityStub>.Create(expectedDone, expectedUndone);
 
             var activity = new ActivityStub(12, 0, 0);
 
@@ -64,9 +64,9 @@ namespace ImmutableUndoRedo
         [TestMethod]
         public void Undo__On_Empty_History__Should_Return_Empty_History()
         {
-            var expected = History.Create();
+            var expected = History<ActivityStub>.Create();
 
-            var target = History.Create();
+            var target = History<ActivityStub>.Create();
 
             var actual = target.Undo();
 
@@ -76,33 +76,33 @@ namespace ImmutableUndoRedo
         [TestMethod]
         public void Undo__With_Given_Done_And_Undone_Activities__Should_Return_New_Instance_Whose_History_Of_Undone_Activities_Is_Extended_By_The_Result_Of_Undoing_The_Recently_Done_Activity_Having_The_History_Of_Done_Activities_Truncated_By_The_Recently_Done_Activity()
         {
-            var done = new IActivity[]
+            var done = new[]
                        {
                            new ActivityStub(10, 0, 0),
                            new ActivityStub(11, 0, 0),
                        };
 
-            var undone = new IActivity[]
+            var undone = new[]
                          {
                              new ActivityStub(20, 0, 0),
                              new ActivityStub(21, 0, 0),
                          };
 
-            var target = History.Create(done, undone);
+            var target = History<ActivityStub>.Create(done, undone);
 
-            var expectedDone = new IActivity[]
+            var expectedDone = new[]
                                {
                                    new ActivityStub(10, 0, 0),
                                };
 
-            var expectedUndone = new IActivity[]
+            var expectedUndone = new[]
                                  {
                                      new ActivityStub(20, 0, 0),
                                      new ActivityStub(21, 0, 0),
                                      new ActivityStub(11, 0, 1),
                                  };
 
-            var expected = History.Create(expectedDone, expectedUndone);
+            var expected = History<ActivityStub>.Create(expectedDone, expectedUndone);
 
             var actual = target.Undo();
 
@@ -112,17 +112,17 @@ namespace ImmutableUndoRedo
         [TestMethod]
         public void Undo__Without_Any_Done_Activities__Should_Return_Identical_Instance()
         {
-            var done = new IActivity[] { };
+            var done = new ActivityStub[0];
 
-            var undone = new IActivity[]
+            var undone = new[]
                          {
                              new ActivityStub(20, 0, 0),
                              new ActivityStub(21, 0, 0),
                          };
 
-            var target = History.Create(done, undone);
+            var target = History<ActivityStub>.Create(done, undone);
 
-            var expected = History.Create(done, undone);
+            var expected = History<ActivityStub>.Create(done, undone);
 
             var actual = target.Undo();
 
@@ -132,9 +132,9 @@ namespace ImmutableUndoRedo
         [TestMethod]
         public void Redo__On_Empty_History__Should_Return_Empty_History()
         {
-            var expected = History.Create();
+            var expected = History<ActivityStub>.Create();
 
-            var target = History.Create();
+            var target = History<ActivityStub>.Create();
 
             var actual = target.Redo();
 
@@ -144,33 +144,33 @@ namespace ImmutableUndoRedo
         [TestMethod]
         public void Redo__With_Given_Done_And_Undone_Activities__Should_Return_New_Instance_Whose_History_Of_Done_Activities_Is_Extended_By_The_Result_Of_Doing_The_Recently_Undone_Activity_Having_The_History_Of_Undone_Activities_Truncated_By_The_Recently_Undone_Activity()
         {
-            var done = new IActivity[]
+            var done = new[]
                        {
                            new ActivityStub(10, 0, 0),
                            new ActivityStub(11, 0, 0),
                        };
 
-            var undone = new IActivity[]
+            var undone = new[]
                          {
                              new ActivityStub(20, 0, 0),
                              new ActivityStub(21, 0, 0),
                          };
 
-            var target = History.Create(done, undone);
+            var target = History<ActivityStub>.Create(done, undone);
 
-            var expectedDone = new IActivity[]
+            var expectedDone = new[]
                                {
                                    new ActivityStub(10, 0, 0),
                                    new ActivityStub(11, 0, 0),
                                    new ActivityStub(21, 1, 0),
                                };
 
-            var expectedUndone = new IActivity[]
+            var expectedUndone = new[]
                                  {
                                      new ActivityStub(20, 0, 0),
                                  };
 
-            var expected = History.Create(expectedDone, expectedUndone);
+            var expected = History<ActivityStub>.Create(expectedDone, expectedUndone);
 
             var actual = target.Redo();
 
@@ -180,17 +180,17 @@ namespace ImmutableUndoRedo
         [TestMethod]
         public void Redo__Without_Any_Undone_Activities__Should_Return_Identical_Instance()
         {
-            var done = new IActivity[]
+            var done = new[]
                        {
                            new ActivityStub(10, 0, 0),
                            new ActivityStub(11, 0, 0),
                        };
 
-            var undone = new IActivity[] { };
+            var undone = new ActivityStub[0];
 
-            var target = History.Create(done, undone);
+            var target = History<ActivityStub>.Create(done, undone);
 
-            var expected = History.Create(done, undone);
+            var expected = History<ActivityStub>.Create(done, undone);
 
             var actual = target.Redo();
 

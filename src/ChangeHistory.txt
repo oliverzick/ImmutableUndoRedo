@@ -7,6 +7,7 @@ Change history:
 
 Version 2.0.0:
 
+	- Issue #9: Enable History class to be specialized with a custom implementation of the IActivity interface
 	- Issue #11: Remove obsolete History.CreateEmpty method
 	- Issue #13: Rename IEvent interface to IActivity
 

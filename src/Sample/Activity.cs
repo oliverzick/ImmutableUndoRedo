@@ -22,7 +22,7 @@ namespace ImmutableUndoRedo
 {
     using System;
 
-    internal struct Activity : IActivity
+    internal class Activity : IActivity<Activity>
     {
         private readonly int id;
 
@@ -31,7 +31,6 @@ namespace ImmutableUndoRedo
         private readonly int undoCalls;
 
         public Activity(int id)
-            : this()
         {
             this.id = id;
         }
@@ -43,14 +42,14 @@ namespace ImmutableUndoRedo
             this.undoCalls = undoCalls;
         }
 
-        public IActivity Do()
+        public Activity Do()
         {
             Console.WriteLine("Do activity #{0}", this.id);
 
             return new Activity(this.id, this.doCalls + 1, this.undoCalls);
         }
 
-        public IActivity Undo()
+        public Activity Undo()
         {
             Console.WriteLine("Undo activity #{0}", this.id);
 

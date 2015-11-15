@@ -22,14 +22,14 @@ namespace ImmutableUndoRedo
 {
     using System;
 
-    internal struct ActivityDummy : IActivity
+    internal struct ActivityDummy : IActivity<ActivityDummy>
     {
-        public IActivity Do()
+        public ActivityDummy Do()
         {
             throw new InvalidOperationException();
         }
 
-        public IActivity Undo()
+        public ActivityDummy Undo()
         {
             throw new InvalidOperationException();
         }

@@ -21,12 +21,15 @@
 namespace ImmutableUndoRedo
 {
     /// <summary>
-    /// Represents an activity that supports 'Do' and 'Undo' operations.
+    /// Defines methods that a type implements to represent an activity that supports doing and undoing.
     /// </summary>
+    /// <typeparam name="T">
+    /// The type that represents an activity to support doing and undoing.
+    /// </typeparam>
     /// <remarks>
     /// This interface is intended to be implemented as immutable object with value semantics.
     /// </remarks>
-    public interface IActivity
+    public interface IActivity<out T>
     {
         /// <summary>
         /// Returns a new activity that represents the result of doing the current activity.
@@ -34,7 +37,7 @@ namespace ImmutableUndoRedo
         /// <returns>
         /// A new activity that represents the result of doing the current activity.
         /// </returns>
-        IActivity Do();
+        T Do();
 
         /// <summary>
         /// Returns a new activity that represents the result of undoing the current activity.
@@ -42,6 +45,6 @@ namespace ImmutableUndoRedo
         /// <returns>
         /// A new activity that represents the result of undoing the current activity.
         /// </returns>
-        IActivity Undo();
+        T Undo();
     }
 }
