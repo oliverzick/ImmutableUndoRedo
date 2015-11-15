@@ -48,9 +48,9 @@
 <a id="sample" class="anchor" href="#sample" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sample</h1>
 
 <h2>
-<a id="event-implementation" class="anchor" href="#event-implementation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Event implementation</h2>
+<a id="activity-implementation" class="anchor" href="#activity-implementation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Activity implementation</h2>
 
-<pre><code>struct Event : IEvent
+<pre><code>internal class Activity : IActivity&lt;Activity&gt;
 {
     private readonly int id;
 
@@ -58,36 +58,35 @@
 
     private readonly int undoCalls;
 
-    public Event(int id)
-        : this()
+    public Activity(int id)
     {
         this.id = id;
     }
 
-    private Event(int id, int doCalls, int undoCalls)
+    private Activity(int id, int doCalls, int undoCalls)
         : this(id)
     {
         this.doCalls = doCalls;
         this.undoCalls = undoCalls;
     }
 
-    public IEvent Do()
+    public Activity Do()
     {
-        Console.WriteLine("Do event #{0}", this.id);
+        Console.WriteLine("Do activity #{0}", this.id);
 
-        return new Event(this.id, this.doCalls + 1, this.undoCalls);
+        return new Activity(this.id, this.doCalls + 1, this.undoCalls);
     }
 
-    public IEvent Undo()
+    public Activity Undo()
     {
-        Console.WriteLine("Undo event #{0}", this.id);
+        Console.WriteLine("Undo activity #{0}", this.id);
 
-        return new Event(this.id, this.doCalls, this.undoCalls + 1);
+        return new Activity(this.id, this.doCalls, this.undoCalls + 1);
     }
 
     public override string ToString()
     {
-        return $"Event {{Id = {this.id}, #Do calls = {this.doCalls}, #Undo calls = {this.undoCalls}}}";
+        return $"Activity {{Id = {this.id}, #Do calls = {this.doCalls}, #Undo calls = {this.undoCalls}}}";
     }
 }
 </code></pre>
@@ -99,52 +98,52 @@
 {
     static void Main(string[] args)
     {
-        var history = History.Create()
-                             .Do(new Event(1))
-                             .Do(new Event(2))
-                             .Do(new Event(3))
-                             .Do(new Event(4))
-                             .Do(new Event(5))
-                             .Undo()
-                             .Undo()
-                             .Undo()
-                             .Redo();
+        var history = History&lt;Activity&gt;.Create()
+                                       .Do(new Activity(1))
+                                       .Do(new Activity(2))
+                                       .Do(new Activity(3))
+                                       .Do(new Activity(4))
+                                       .Do(new Activity(5))
+                                       .Undo()
+                                       .Undo()
+                                       .Undo()
+                                       .Redo();
 
-        Console.WriteLine("\n\nDone events:");
-        List&lt;IEvent&gt; doneEvents = new List&lt;IEvent&gt;();
-        history.CopyDoneTo(doneEvents);
-        doneEvents.ForEach(Console.WriteLine);
+        Console.WriteLine("\n\nDone activities:");
+        var done = new List&lt;Activity&gt;();
+        history.CopyDoneTo(done);
+        done.ForEach(Console.WriteLine);
 
-        Console.WriteLine("\n\nUndone events:");
-        List&lt;IEvent&gt; undoneEvents = new List&lt;IEvent&gt;();
-        history.CopyUndoneTo(undoneEvents);
-        undoneEvents.ForEach(Console.WriteLine);
+        Console.WriteLine("\n\nUndone activities:");
+        var undone = new List&lt;Activity&gt;();
+        history.CopyUndoneTo(undone);
+        undone.ForEach(Console.WriteLine);
 
         Console.ReadLine();
     }
 }
 
 // Console output:
-Do event #1
-Do event #2
-Do event #3
-Do event #4
-Do event #5
-Undo event #5
-Undo event #4
-Undo event #3
-Do event #3
+Do activity #1
+Do activity #2
+Do activity #3
+Do activity #4
+Do activity #5
+Undo activity #5
+Undo activity #4
+Undo activity #3
+Do activity #3
 
 
-Done events:
-Event {Id = 1, #Do calls = 1, #Undo calls = 0}
-Event {Id = 2, #Do calls = 1, #Undo calls = 0}
-Event {Id = 3, #Do calls = 2, #Undo calls = 1}
+Done activities:
+Activity {Id = 1, #Do calls = 1, #Undo calls = 0}
+Activity {Id = 2, #Do calls = 1, #Undo calls = 0}
+Activity {Id = 3, #Do calls = 2, #Undo calls = 1}
 
 
-Undone events:
-Event {Id = 5, #Do calls = 1, #Undo calls = 1}
-Event {Id = 4, #Do calls = 1, #Undo calls = 1}
+Undone activities:
+Activity {Id = 5, #Do calls = 1, #Undo calls = 1}
+Activity {Id = 4, #Do calls = 1, #Undo calls = 1}
 </code></pre>
       </section>
     </div>
