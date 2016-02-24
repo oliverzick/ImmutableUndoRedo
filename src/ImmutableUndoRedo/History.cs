@@ -26,20 +26,20 @@ namespace ImmutableUndoRedo
     /// <summary>
     /// Represents a history of activities that supports doing, undoing and redoing of activities.
     /// </summary>
-    /// <typeparam name="T">
+    /// <typeparam name="TActivity">
     /// The specific type of activity that must implement the <see cref="IActivity{T}"/> interface.
     /// </typeparam>
     /// <remarks>
     /// This class is implemented as immutable object with value semantics.
     /// </remarks>
-    public sealed class History<T> : IEquatable<History<T>>, IContentEquatable<History<T>>
-        where T : IActivity<T>
+    public sealed class History<TActivity> : IEquatable<History<TActivity>>, IContentEquatable<History<TActivity>>
+        where TActivity : IActivity<TActivity>
     {
-        private readonly Timeline<T> done;
+        private readonly Timeline<TActivity> done;
 
-        private readonly Timeline<T> undone;
+        private readonly Timeline<TActivity> undone;
 
-        private History(Timeline<T> done, Timeline<T> undone)
+        private History(Timeline<TActivity> done, Timeline<TActivity> undone)
         {
             this.done = done;
             this.undone = undone;
@@ -53,7 +53,7 @@ namespace ImmutableUndoRedo
         /// <returns>
         /// <c>true</c> if the value of <paramref name="left"/> is the same as the value of <paramref name="right"/>; otherwise, <c>false</c>.
         /// </returns>
-        public static bool operator ==(History<T> left, History<T> right)
+        public static bool operator ==(History<TActivity> left, History<TActivity> right)
         {
             return object.Equals(left, right);
         }
@@ -66,7 +66,7 @@ namespace ImmutableUndoRedo
         /// <returns>
         /// <c>true</c> if the value of <paramref name="left"/> is different from the value of <paramref name="right"/>; otherwise, <c>false</c>.
         /// </returns>
-        public static bool operator !=(History<T> left, History<T> right)
+        public static bool operator !=(History<TActivity> left, History<TActivity> right)
         {
             return !(left == right);
         }
@@ -77,11 +77,11 @@ namespace ImmutableUndoRedo
         /// <returns>
         /// A <see cref="History{T}"/> that contains neither done nor undone activities.
         /// </returns>
-        public static History<T> Create()
+        public static History<TActivity> Create()
         {
-            return new History<T>(
-                Timeline<T>.Empty(),
-                Timeline<T>.Empty());
+            return new History<TActivity>(
+                Timeline<TActivity>.Empty(),
+                Timeline<TActivity>.Empty());
         }
 
         /// <summary>
@@ -98,11 +98,11 @@ namespace ImmutableUndoRedo
         /// A <see cref="History{T}"/> that contains the specified
         /// <paramref name="done"/> and <paramref name="undone"/> activities.
         /// </returns>
-        public static History<T> Create(IEnumerable<T> done, IEnumerable<T> undone)
+        public static History<TActivity> Create(IEnumerable<TActivity> done, IEnumerable<TActivity> undone)
         {
-            return new History<T>(
-                Timeline<T>.Create(done),
-                Timeline<T>.Create(undone));
+            return new History<TActivity>(
+                Timeline<TActivity>.Create(done),
+                Timeline<TActivity>.Create(undone));
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace ImmutableUndoRedo
         /// </returns>
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as History<T>);
+            return this.Equals(obj as History<TActivity>);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace ImmutableUndoRedo
         /// <c>true</c> if the value of <paramref name="other"/> is the same as the value of this instance; otherwise, <c>false</c>.
         /// If <paramref name="other"/> is <c>null</c>, the method returns <c>false</c>.
         /// </returns>
-        public bool Equals(History<T> other)
+        public bool Equals(History<TActivity> other)
         {
             return ValueSemantics.Equals(this, other);
         }
@@ -149,10 +149,10 @@ namespace ImmutableUndoRedo
         /// <returns>
         /// A <see cref="History{T}"/> that is equivalent to this instance except that the done activities are cleared.
         /// </returns>
-        public History<T> ClearDone()
+        public History<TActivity> ClearDone()
         {
-            return new History<T>(
-                Timeline<T>.Empty(),
+            return new History<TActivity>(
+                Timeline<TActivity>.Empty(),
                 this.undone);
         }
 
@@ -163,11 +163,11 @@ namespace ImmutableUndoRedo
         /// <returns>
         /// A <see cref="History{T}"/> that is equivalent to this instance except that the undone activities are cleared.
         /// </returns>
-        public History<T> ClearUndone()
+        public History<TActivity> ClearUndone()
         {
-            return new History<T>(
+            return new History<TActivity>(
                 this.done,
-                Timeline<T>.Empty());
+                Timeline<TActivity>.Empty());
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace ImmutableUndoRedo
         /// <param name="collection">
         /// The collection of activities to which the done activities are copied.
         /// </param>
-        public void CopyDoneTo(ICollection<T> collection)
+        public void CopyDoneTo(ICollection<TActivity> collection)
         {
             this.done.CopyTo(collection);
         }
@@ -187,7 +187,7 @@ namespace ImmutableUndoRedo
         /// <param name="collection">
         /// The collection of activities to which the undone activities are copied.
         /// </param>
-        public void CopyUndoneTo(ICollection<T> collection)
+        public void CopyUndoneTo(ICollection<TActivity> collection)
         {
             this.undone.CopyTo(collection);
         }
@@ -207,11 +207,11 @@ namespace ImmutableUndoRedo
         /// method of the specified <paramref name="activity"/>,
         /// without any activities to redo.
         /// </returns>
-        public History<T> Do(T activity)
+        public History<TActivity> Do(TActivity activity)
         {
-            return new History<T>(
-                Timeline<T>.Create(activity.Do(), this.done),
-                Timeline<T>.Empty());
+            return new History<TActivity>(
+                Timeline<TActivity>.Create(activity.Do(), this.done),
+                Timeline<TActivity>.Empty());
         }
 
         /// <summary>
@@ -227,9 +227,9 @@ namespace ImmutableUndoRedo
         /// If this instance does not contain any done activities,
         /// the method returns a new <see cref="History{T}"/> that is identical to this instance.
         /// </returns>
-        public History<T> Undo()
+        public History<TActivity> Undo()
         {
-            return new History<T>(
+            return new History<TActivity>(
                 this.done.Next(),
                 this.undone.Prepend(this.done.Apply(e => e.Undo())));
         }
@@ -247,14 +247,14 @@ namespace ImmutableUndoRedo
         /// If this instance does not contain any undone activities,
         /// the method returns a new <see cref="History{T}"/> that is identical to this instance.
         /// </returns>
-        public History<T> Redo()
+        public History<TActivity> Redo()
         {
-            return new History<T>(
+            return new History<TActivity>(
                 this.done.Prepend(this.undone.Apply(e => e.Do())),
                 this.undone.Next());
         }
 
-        bool IContentEquatable<History<T>>.ContentEquals(History<T> other)
+        bool IContentEquatable<History<TActivity>>.ContentEquals(History<TActivity> other)
         {
             return object.Equals(this.done, other.done)
                    && object.Equals(this.undone, other.undone);

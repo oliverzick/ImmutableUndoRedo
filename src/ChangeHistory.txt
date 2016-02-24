@@ -1,9 +1,13 @@
 ImmutableUndoRedo library
-Copyright (c) 2015 Oliver Zick. All rights reserved.
+Copyright (c) 2015-2016 Oliver Zick. All rights reserved.
 
 ============================================================
 
 Change history:
+
+Version 2.0.1:
+
+	- Issue #14: Improve naming of History class's generic type parameter, rename to TActivity
 
 Version 2.0.0:
 
