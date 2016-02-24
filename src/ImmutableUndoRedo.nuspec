@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>ImmutableUndoRedo</id>
-        <version>2.0.0</version>
+        <version>2.0.1</version>
         <title>ImmutableUndoRedo</title>
         <authors>Oliver Zick</authors>
         <licenseUrl>https://raw.githubusercontent.com/oliverzick/ImmutableUndoRedo/master/LICENSE</licenseUrl>
@@ -12,7 +12,7 @@
         <description>A lightweight, flexible and easy to use do/undo/redo implementation based on immutable objects for .NET.</description>
         <summary>A lightweight, flexible and easy to use do/undo/redo implementation based on immutable objects for .NET.</summary>
         <releaseNotes>https://raw.githubusercontent.com/oliverzick/ImmutableUndoRedo/master/src/ChangeHistory.txt</releaseNotes>
-        <copyright>Copyright (c) 2015 Oliver Zick. All rights reserved.</copyright>
+        <copyright>Copyright (c) 2015-2016 Oliver Zick. All rights reserved.</copyright>
         <language>en-US</language>
         <tags>do undo redo history immutable immutability</tags>
     </metadata>
