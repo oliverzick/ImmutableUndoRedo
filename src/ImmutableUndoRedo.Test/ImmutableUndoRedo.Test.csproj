@@ -1,15 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="$(SolutionDir)Global.targets" />
+  
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
-
-    <Copyright>Copyright © 2015 Oliver Zick. All rights reserved.</Copyright>
-
-    <Authors>Oliver Zick</Authors>
-
-    <Product>ImmutableUndoRedo Test</Product>
   </PropertyGroup>
 
   <ItemGroup>

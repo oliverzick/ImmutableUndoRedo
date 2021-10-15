@@ -1,11 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="$(SolutionDir)Global.targets" />
+  
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <Copyright>Copyright © 2015 Oliver Zick. All rights reserved.</Copyright>
-    <Product>ImmutableUndoRedo</Product>
-    <Authors>Oliver Zick</Authors>
     <PackageId>ImmutableUndoRedo.Sample</PackageId>
   </PropertyGroup>
 
