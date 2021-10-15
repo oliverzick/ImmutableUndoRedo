@@ -1,8 +1,6 @@
 # ImmutableUndoRedo library
 Copyright (c) 2015-2021 Oliver Zick. All rights reserved.
 
----
-
 ## Version 2.1.0:
 
 * #15: Migrate to .NET Standard 2.0
