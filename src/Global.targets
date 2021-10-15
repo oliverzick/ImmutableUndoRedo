@@ -8,6 +8,14 @@
     <PackageTags>do undo redo history immutable immutability</PackageTags>
     <PackageProjectUrl>https://github.com/oliverzick/ImmutableUndoRedo</PackageProjectUrl>
     <RepositoryUrl>https://github.com/oliverzick/ImmutableUndoRedo</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
