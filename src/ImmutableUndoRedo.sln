@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableUndoRedo", "ImmutableUndoRedo\ImmutableUndoRedo.csproj", "{5ED2FF6A-209A-4ABE-9383-4C550E5D7DCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImmutableUndoRedo", "ImmutableUndoRedo\ImmutableUndoRedo.csproj", "{5ED2FF6A-209A-4ABE-9383-4C550E5D7DCE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{A2D1E7D5-0255-4FEC-BA21-D8446DA1BEB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableUndoRedo.Test", "ImmutableUndoRedo.Test\ImmutableUndoRedo.Test.csproj", "{446876B7-8517-4155-96C5-27F9161892EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImmutableUndoRedo.Test", "ImmutableUndoRedo.Test\ImmutableUndoRedo.Test.csproj", "{446876B7-8517-4155-96C5-27F9161892EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1D1B0A5B-14ED-4F91-92F5-8B556CB68F75}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{74FDEBEA-3B29-4B41-85B6-398FB820E74F}"
 	ProjectSection(SolutionItems) = preProject
-		ChangeHistory.txt = ChangeHistory.txt
+		..\CHANGELOG.md = ..\CHANGELOG.md
 		Global.targets = Global.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{FC6750F6-C8EA-46FA-A09E-9A4D58F72B49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{C6401CB4-DDC9-42DF-AB83-2E4CE63ED1BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample", "Sample\Sample.csproj", "{C6401CB4-DDC9-42DF-AB83-2E4CE63ED1BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
