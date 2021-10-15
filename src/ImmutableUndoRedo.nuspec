@@ -17,8 +17,6 @@
         <tags>do undo redo history immutable immutability</tags>
     </metadata>
     <files>
-        <file src="bin\Release\net45\ImmutableUndoRedo.dll" target="lib\net45\ImmutableUndoRedo.dll" />
-        <file src="bin\Release\net45\ImmutableUndoRedo.xml" target="lib\net45\ImmutableUndoRedo.xml" />
         <file src="bin\Release\net451\ImmutableUndoRedo.dll" target="lib\net451\ImmutableUndoRedo.dll" />
         <file src="bin\Release\net451\ImmutableUndoRedo.xml" target="lib\net451\ImmutableUndoRedo.xml" />
         <file src="bin\Release\net452\ImmutableUndoRedo.dll" target="lib\net452\ImmutableUndoRedo.dll" />
