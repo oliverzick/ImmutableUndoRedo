@@ -6,6 +6,8 @@ Copyright (c) 2015-2021 Oliver Zick. All rights reserved.
 ## Version 2.1.0:
 
 * #15: Migrate to .NET Standard 2.0
+* #17: Include LICENSE file in packages
+* #19: Transform CHANGELOG into markdown
 
 ## Version 2.0.1:
 
