@@ -1,5 +1,5 @@
 ImmutableUndoRedo library
-Copyright (c) 2015-2016 Oliver Zick. All rights reserved.
+Copyright (c) 2015-2021 Oliver Zick. All rights reserved.
 
 ============================================================
 
