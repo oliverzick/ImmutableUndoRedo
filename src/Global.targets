@@ -1,0 +1,13 @@
+<Project>
+
+  <PropertyGroup>
+    <Version>2.1.0</Version>
+    <Authors>Oliver Zick</Authors>
+    <Copyright>Copyright © 2015-2021 Oliver Zick. All rights reserved.</Copyright>
+    <Product>ImmutableUndoRedo</Product>
+    <PackageTags>do undo redo history immutable immutability</PackageTags>
+    <PackageProjectUrl>https://github.com/oliverzick/ImmutableUndoRedo</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/oliverzick/ImmutableUndoRedo</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>
